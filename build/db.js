@@ -17,13 +17,13 @@ _mongoose["default"].connect(process.env.DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true
-}).then(function () {
-  console.log('db ok');
-
+}) // okey
+.then(function () {
   _index["default"].listen(process.env.SERVER_PORT, function () {
     console.log('server running on port ' + process.env.SERVER_PORT);
   });
-})["catch"](function (err) {
+}) // error
+["catch"](function (err) {
   console.error(err);
 });
 

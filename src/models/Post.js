@@ -15,6 +15,9 @@ const schema = new Schema({
   },
   category: {
     type: String
+  },
+  imagePath: {
+    type: String
   }
 }, {
   timestamps: true, // 

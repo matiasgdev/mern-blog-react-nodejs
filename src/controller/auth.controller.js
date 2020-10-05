@@ -4,20 +4,18 @@ import config from '../config'
 import Role from '../models/Role'
 
 export const login = async (req, res) => {
+
   try {
     const user = await User.findOne({ email: req.body.email }).populate('roles')
-
     if (!user) {
       return res.status(404).json({ message: 'No existe el usuario'})
     }
-    
     const passwordIsTrue = await user.validatePassword(req.body.password)
     if (!passwordIsTrue) {
       return res.status(401).json({ message: 'La contraseña no coincide' })
     }
-
     const token = jwt.sign({ id: user._id }, config.SECRET_KEY , {
-      expiresIn: 86400 // one day
+      expiresIn: "24h" // one day
     })
     
     return res.json({ message: 'Ha iniciado sesion', user: {
@@ -27,14 +25,14 @@ export const login = async (req, res) => {
   } catch(err) { 
     res.status(500).json({ message: 'Ocurrio un error. Intente luego' })
   }
-
+  
 }
 
 export const create = async (req, res) => {
   if (!req.body) {
     return res.status(400).json({ message: "Ingrese los datos necesarios para crear el usuario"})
   }
-
+  
   const { email, password, username, roles } = req.body
 
   const newUser = new User({ email, password, username })
@@ -42,6 +40,7 @@ export const create = async (req, res) => {
   if (roles) {
     const foundRole = await Role.find({ name: { $in: roles }})
     if (foundRole.length <= 0) {
+      
       const role = await Role.findOne({ name: "user"})
       newUser.roles = [role._id]
     } else {
@@ -61,7 +60,13 @@ export const create = async (req, res) => {
 
     res.status(201).json({
       message: "Usuario creado correctamente",
-      user: savedUser,
+      user: {
+        id: savedUser._id,
+        username: savedUser.username,
+        email: savedUser.email,
+        createdAt: savedUser.createdAt,
+        updatedAt: savedUser.updatedAt,
+      },
       token
     })
 

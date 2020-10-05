@@ -3,18 +3,22 @@ import { create, list, detail, update, remove } from '../controller/post.control
 import { findPostById } from '../middlewares/findPostById'
 import { verifyToken } from '../middlewares/verifyToken'
 import { isAdmin } from '../middlewares/checkIsAdmin'
+import uploadFile from '../middlewares/uploadFile'
 
 const router = Router()
 
-
+// list posts
 router.get('/', list)
 router.get('/:id', findPostById, detail)
 
-// crear post
-router.post('/', verifyToken, isAdmin,  create)
-// actualizar post
+// create post
+// router.post('/', verifyToken, isAdmin, uploadFile.single('post_image'), create)
+router.post('/', uploadFile.single('post_image'), create)
+  
+// update post
 router.put('/:id', verifyToken, isAdmin,  findPostById, update)
-// borrar post
+
+// delete post
 router.delete('/:id', verifyToken, isAdmin, findPostById, remove)
 
 

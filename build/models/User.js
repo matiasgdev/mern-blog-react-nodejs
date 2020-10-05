@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _mongoose = require("mongoose");
 
-var _bcrypt = _interopRequireDefault(require("bcrypt"));
+var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -18,7 +18,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var schema = new _mongoose.Schema({
   username: {
     type: String,
-    required: true
+    unique: true
   },
   email: {
     type: String,
@@ -28,7 +28,19 @@ var schema = new _mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  roles: [{
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Role" // referencia
+
+  }],
+  posts: [{
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: "Post"
+  }]
+}, {
+  timestamps: true,
+  versionKey: false
 });
 schema.pre('save', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(next) {
@@ -39,12 +51,12 @@ schema.pre('save', /*#__PURE__*/function () {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _bcrypt["default"].genSalt(10);
+            return _bcryptjs["default"].genSalt(10);
 
           case 3:
             salt = _context.sent;
             _context.next = 6;
-            return _bcrypt["default"].hash(this.password, salt);
+            return _bcryptjs["default"].hash(this.password, salt);
 
           case 6:
             this.password = _context.sent;
@@ -69,7 +81,7 @@ schema.pre('save', /*#__PURE__*/function () {
 }());
 
 schema.methods.validatePassword = function validatePassword(password) {
-  return _bcrypt["default"].compare(password, this.password);
+  return _bcryptjs["default"].compare(password, this.password);
 };
 
 var _default = (0, _mongoose.model)('User', schema);

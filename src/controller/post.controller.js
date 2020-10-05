@@ -1,21 +1,42 @@
 import Post from '../models/Post'
+import cloudinary from 'cloudinary'
 
 export const create = async (req, res) => {
 
-  if (!req.body) {
-    return res.status(400).json({ message: 'Ingrese los datos para crear el post' })
+  if (req.body.title === '') {
+    return res.status(400).json({ message: 'Se requiere un titulo', field: "title", error: true })
   }
+  if (req.body.description === '') {
+    return res.status(400).json({ message: 'Se requiere una descripcion ', field: "description", error: true })
+  }
+  if (req.body.content === '') {
+    return res.status(400).json({ message: 'Se requiere un contenido', field: "content", error: true })
+  }
+
+  if(!req.file) {
+    return res.status(400).json({ message: 'Se requiere una imagen', field: "imagePath", error: true })
+  }
+
   const { title, description, content, category } = req.body
 
   try {
-    const post =  new Post({title, description, content, category })
+    const isTitleUnique = await Post.findOne({ title })
+    if (isTitleUnique) {
+      return res.status(400).json({ message: 'Ya existe un post con ese titulo', field: 'title', error: true })
+    }
+    const image = await cloudinary.v2.uploader.upload(req.file.path)
+    const post =  new Post({title, description, content, category, imagePath: image.url })
+
     const newPost = await post.save()
-    return res.status(201).json({ 
+    return res.status(201).json({
       message: 'Post creado correctamente',
-      post: { data: newPost }
+      status: 201,
+      error: false, 
+      data: newPost
     })
+    
   } catch(err) {
-    return res.status(500).json({ message: 'Hubo un error al crear el post', error: err.message })
+    return res.status(500).json({ message: 'Hubo un error al crear el post', error: err.message, status: 500 })
   }
   
 }
@@ -23,7 +44,7 @@ export const create = async (req, res) => {
 export const list = async (req, res) => {
   try {
     const posts = await Post.find()
-    return res.json({ count: posts.length, data: posts })
+    return res.json({ count: posts.length, posts: posts })
   } catch(err) {
     res.status(500).json({ message: 'Ocurrio un error, intente luego', error: err.message })
   }
@@ -31,7 +52,7 @@ export const list = async (req, res) => {
 
 
 export const detail = async (req, res) => {
-  res.json({ data: res.post })
+  res.json({ post: res.post })
 }
 
 
