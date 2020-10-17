@@ -1,46 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { createPost } from '../../actions/postsActions'
 import Loader from '../Loader'
-import fetchNewPost from '../../services/fetchNewPost'
 import { useLocation } from 'wouter'
 
 export default function FormPost() {
 
-  const formRef = useRef(null)
-  // const [ title, setTitle ] = useState('')
-  // const [ description, setDescription ] = useState('')
-  // const [ content, setContent ] = useState('')
-  // const [ image, setImage ] = useState(null)
-  const [ error, setError ] = useState({})
-  const [ loading, setLoading ] = useState(false)
-  const [ idTimeout, setIdTimeout ] = useState(null)
-  const [ location, setLocation ] = useLocation()
+  const dispatch = useDispatch()
 
-  useEffect(function() {  
-    return () => {
-      if (idTimeout) clearInterval(idTimeout)
-    }
-  })
+  const formRef = useRef()
+  const newPostInfo = useSelector(state => state.postCreate)
+  const { error, loading, postInfo } = newPostInfo
 
-  const handleSubmit = async e => {
+  const [ _, pushLocation ] = useLocation()
+
+  const handleSubmit = e => {
     e.preventDefault()
     const data = new FormData(formRef.current)
-
-    try {
-      if (idTimeout) clearInterval(idTimeout)
-      
-      const res = await fetchNewPost({ payload: data })
-      setLoading(false)
-      if (res.error) {
-        setError(res)
-        const id = setTimeout(() => setError({}), 1500)
-        setIdTimeout(id)
-        return
-      }
-      setLocation('/posts')
-    } catch(e) {
-      setLocation('/404')
-    }
+    dispatch(createPost({data}))
   }
+
+  useEffect(() => {
+    if (postInfo) {
+      pushLocation(`/comunidad`) // push to community for now
+    }
+  }, [postInfo, pushLocation])
 
   const formStyles = {
     display: 'flex', 
@@ -51,6 +35,7 @@ export default function FormPost() {
   return (
     <>
       { loading && <Loader />}
+      { error && error }
       <form
         style={formStyles}
         onSubmit={handleSubmit}
@@ -61,24 +46,20 @@ export default function FormPost() {
           placeholder="Title"
           name="title"
         />
-        { error.field === 'title' && <span> {error.message} </span> }
         <input 
           type="text"
           placeholder="Description"
           name="description"
         />
-        { error.field === 'description' && <span> {error.message} </span> }
         <input 
           type="text"
           placeholder="Content"
           name="content"
         />
-        { error.field === 'content' && <span> {error.message} </span> }
         <input 
           type="file"
           name="post_image"
         />
-        { error.field === 'imagePath' && <span> {error.message} </span> }
         <button>Crear post</button>
       </form>
     </>

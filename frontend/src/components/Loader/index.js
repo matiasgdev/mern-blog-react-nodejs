@@ -1,7 +1,19 @@
 import React from 'react'
+import './index.css'
 
 export default function Loader() {
-  return <p>
-    Loading...
-  </p>
+  return <div class="lds-default">
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+  </div>
 }

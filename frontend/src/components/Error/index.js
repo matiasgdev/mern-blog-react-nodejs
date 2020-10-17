@@ -1,9 +1,10 @@
 import React from 'react'
+import {ErrorContainer} from './elements'
 
-export default function Error({error}) {
+export default function Error({message}) {
   return (
-    <p>
-      {error.message}
-    </p>
+    <ErrorContainer>
+      {message}
+    </ErrorContainer>
   )
 }

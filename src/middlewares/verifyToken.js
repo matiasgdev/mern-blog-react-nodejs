@@ -1,26 +1,31 @@
 import config from '../config'
 import jwt from 'jsonwebtoken'
 import User from '../models/User'
-import Role from '../models/Role'
+import ash from 'express-async-handler'
 
-export const verifyToken = async (req, res, next) => {
-  try {
-    const token = req.headers["x-access-token"]
-    if (!token) return res.status(403).json({ message: 'Se requiere un token. Intente iniciando sesión' })
-
+export const verifyToken = ash(async (req, res, next) => {
+  if( 
+    req.headers['authorization'] &&
+    req.headers['authorization'].startsWith('Bearer ')
+  ){
+    const token = req.headers["authorization"].split(' ').pop()
+    
     const decoded = jwt.verify(token, config.SECRET_KEY)
+
     const user = await User.findOne({ _id: decoded.id}, { password: 0})
-    if (!user) return res.status(400).json({ message: 'Usuario no encontrado. Intente iniciando sesión'})
-
+    
+    if (!user) {
+      res.status(401)
+      throw new Error('Usuario no encontrado. Intente iniciando sesión')
+    }
     res.user = user
-
     next()
 
-  } catch(err) {
-    return res.status(401).json({ message: 'La sesión expiro o el token no existe.'})
+  } else {
+    res.status(401)
+    throw new Error('Debes proveer un token')
   }
-
-}
+})
 
 
 

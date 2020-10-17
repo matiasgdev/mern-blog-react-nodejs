@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import cloudinary from 'cloudinary'
 import auth from './routes/auth'
 import post from './routes/post'
+import { errorHandler, notFound } from './middlewares/errorMiddleware'
 
 cloudinary.config({
   cloud_name: 'matiasgdev',
@@ -27,5 +28,8 @@ app.use(express.json())
 
 app.use('/api/auth', auth)
 app.use('/api/post', post)
+
+app.use(notFound)
+app.use(errorHandler)
 
 export default app

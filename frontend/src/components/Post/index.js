@@ -1,12 +1,35 @@
 import React from 'react'
+import {
+  PostItemContainer,
+  ImageContainer,
+  ContentContainer,
+  Title,
+  Description,
+  DetailsContainer,
+  DetailItem,
+  Content
+} from './elements'
 
-export default function Post({title, description, content, imagePath}) {
+export default function Post({
+    title, 
+    description,
+    content,
+    imagePath,
+    slug,
+    user = {}}
+){
   return (
-    <div>
-      <img width="200" src={imagePath} />
-      <h2>{title}</h2>
-      <small>{description}</small>
-      <p>{content}</p>
-    </div>
+    <PostItemContainer to={`/publicacion/${slug}`}>
+      <ImageContainer  src={imagePath} loading="lazy" />
+      <ContentContainer>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
+        <DetailsContainer>
+          <DetailItem> 
+            Creado por {user.username}
+          </DetailItem>
+        </DetailsContainer>
+      </ContentContainer>
+    </PostItemContainer>
   )
 }

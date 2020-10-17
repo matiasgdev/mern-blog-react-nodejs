@@ -1,92 +1,118 @@
 import Post from '../models/Post'
+import User from '../models/User'
+import ash from 'express-async-handler'
 import cloudinary from 'cloudinary'
 
-export const create = async (req, res) => {
-
+export const create = ash(async (req, res) => {
   if (req.body.title === '') {
-    return res.status(400).json({ message: 'Se requiere un titulo', field: "title", error: true })
+    res.status(400)
+    throw new Error("Se requiere un título")
   }
+
   if (req.body.description === '') {
-    return res.status(400).json({ message: 'Se requiere una descripcion ', field: "description", error: true })
+    res.status(400)
+    throw new Error("Se requiere una descripción")
   }
+  
   if (req.body.content === '') {
-    return res.status(400).json({ message: 'Se requiere un contenido', field: "content", error: true })
+    res.status(400)
+    throw new Error("Se requiere un contenido")
   }
 
   if(!req.file) {
-    return res.status(400).json({ message: 'Se requiere una imagen', field: "imagePath", error: true })
+    res.status(400)
+    throw new Error("Se requiere al menos una imagen")
   }
 
   const { title, description, content, category } = req.body
+  const isTitleUnique = await Post.findOne({ title })
 
-  try {
-    const isTitleUnique = await Post.findOne({ title })
-    if (isTitleUnique) {
-      return res.status(400).json({ message: 'Ya existe un post con ese titulo', field: 'title', error: true })
-    }
-    const image = await cloudinary.v2.uploader.upload(req.file.path)
-    const post =  new Post({title, description, content, category, imagePath: image.url })
-
-    const newPost = await post.save()
-    return res.status(201).json({
-      message: 'Post creado correctamente',
-      status: 201,
-      error: false, 
-      data: newPost
-    })
-    
-  } catch(err) {
-    return res.status(500).json({ message: 'Hubo un error al crear el post', error: err.message, status: 500 })
+  if (isTitleUnique) {
+    res.status(400)
+    throw new Error('Ya existe un post con ese titulo')
   }
+
+  const image = await cloudinary.v2.uploader.upload(req.file.path)
+  const post =  new Post({title, description, content, category, imagePath: image.url })
+
+  const userData = await User.findOne({ _id: res.user._id })
+  post.user = userData._id
+
+  const newPost = await post.save()
+  return res.status(201).json(newPost)
   
-}
+})
 
 export const list = async (req, res) => {
+  const pageLimit = 5
+  const page = Number(req.query.page) || 1
+
   try {
-    const posts = await Post.find()
-    return res.json({ count: posts.length, posts: posts })
+    const count = await Post.countDocuments()
+    const posts = await Post.find().populate('user', 'username')
+      .limit(pageLimit)
+      .skip(pageLimit * (page - 1))
+    return res.json({ count, posts: posts, page, pages: Math.ceil(count / pageLimit) })
   } catch(err) {
     res.status(500).json({ message: 'Ocurrio un error, intente luego', error: err.message })
   }
 }
+// export const detail = async (req, res) => {
+//   res.json({ post: res.post })
+// }
 
+export const detailBySlug = ash(async (req, res) => {
+  const detailOfPost = await Post.findOne({ slug: req.params.slug }).populate('user', 'username')
 
-export const detail = async (req, res) => {
-  res.json({ post: res.post })
-}
-
-
-export const update = async (req, res) => { 
-  if (!req.body) {
-    return res.status(400).json({ message: 'Ingrese algun dato para actualizar el post' })
+  if (!detailOfPost) {
+    res.status(400)
+    throw new Error(`No existe el post ${req.params.slug}`)
   }
+  res.json(detailOfPost)
+})
+
+
+export const update = ash(async (req, res) => {
+  let isSomethingToModify = 0
 
   Object.keys(req.body).map(key => {
-    if (req.body[key] != '') {
+    if (req.body[key] !== '') {
       res.post[key] = req.body[key]
+      isSomethingToModify++
     }
   })
+  if (isSomethingToModify === 0) {
+    throw new Error("No existen datos para modificar")
+  }
+  const updatedPost = await res.post.save()
+  res.json(updatedPost)
+  
+})
 
-  try {
+
+export const updateLikesOfPost = ash(async (req, res) => {
+
+  if (req.query.like === 'add') {
+    res.post.likes = res.post.likes + 1
     const updatedPost = await res.post.save()
-    res.json({message: 'Post actualizado correctamente', post: updatedPost })
-
-  } catch(err) {
-    res.status(400).json({ message: 'Ocurrio un error', error: err.message })
+    res.json(updatedPost)
+  } else if (req.query.like === 'decrement') {
+    res.post.likes = res.post.likes - 1
+    const updatedPost = await res.post.save()
+    res.json(updatedPost)
+  } else {
+    res.status(400)
+    throw new Error('Error al actualizar el post')
   }
 
-}
+})
 
-export const remove = async (req, res) => { 
-  try {
-    await res.post.remove()
-    res.json({message: 'Post eliminado correctamente'})
+export const
 
-  } catch(err) {
-    res.status(500).json({ message: 'Ocurrio un error', error: err.message })
-  }
-
-}
+export const remove = ash(async (req, res) => { 
+  await res.post.remove()
+  res.status(204)
+})
 
 
 
