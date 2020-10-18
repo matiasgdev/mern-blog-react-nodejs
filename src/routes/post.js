@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { findPostById } from '../middlewares/findPostById'
 import { verifyToken } from '../middlewares/verifyToken'
 import { isAdmin } from '../middlewares/checkIsAdmin'
+import { findPostById } from '../middlewares/findPostById'
+import { createComment, isOwnerOfComment } from '../middlewares/commentMiddleware'
 import uploadFile from '../middlewares/uploadFile'
 
 import { 
@@ -11,7 +12,9 @@ import {
   update, 
   remove,
   detailBySlug,
-  updateLikesOfPost
+  updateLikesOfPost,
+  addCommentToPost,
+  deleteComment,
 } from '../controller/post.controller.js'
 
 const router = Router()
@@ -22,14 +25,20 @@ router.get('/', list)
 router.get('/:slug', detailBySlug)
 
 // create post
-router.post('/', verifyToken, isAdmin, uploadFile.single('post_image'), create)
+router.post('/', verifyToken, uploadFile.single('post_image'), create)
 // router.post('/', uploadFile.single('post_image'), create)
   
 // update post
 router.put('/:id', verifyToken, isAdmin,  findPostById, update)
 
-// handle likes post]
+// update likes post
 router.put('/like/:id', verifyToken, findPostById, updateLikesOfPost)
+
+// add comment
+router.put('/comment/:id', verifyToken, findPostById, createComment, addCommentToPost)
+
+// delete comment
+router.delete('/comment/:postId/:commentId', verifyToken, findPostById, isOwnerOfComment, deleteComment)
 
 // delete post
 router.delete('/:id', verifyToken, isAdmin, findPostById, remove)

@@ -1,5 +1,6 @@
 import Post from '../models/Post'
 import User from '../models/User'
+import Comment from '../models/Comment'
 import ash from 'express-async-handler'
 import cloudinary from 'cloudinary'
 
@@ -62,7 +63,8 @@ export const list = async (req, res) => {
 // }
 
 export const detailBySlug = ash(async (req, res) => {
-  const detailOfPost = await Post.findOne({ slug: req.params.slug }).populate('user', 'username')
+  const detailOfPost = await Post.findOne({ slug: req.params.slug })
+    .populate('user', 'username')
 
   if (!detailOfPost) {
     res.status(400)
@@ -103,11 +105,37 @@ export const updateLikesOfPost = ash(async (req, res) => {
   } else {
     res.status(400)
     throw new Error('Error al actualizar el post')
-  }
+  }   
 
 })
 
-export const
+export const addCommentToPost = ash(async (req, res) => {
+  res.post.comments.push(res.comment._id)
+  await res.post.save()
+
+  const post = await Post.findOne({_id: res.post._id}).populate('comments')
+
+  res.json({
+    postId: post._id,
+    comment: res.comment._id,
+    comments: post.comments,
+    count: post.comments.length
+  })
+})
+
+export const deleteComment = ash(async (req, res) => {
+  
+  const isDeleted = await Post.findOneAndUpdate(
+    { _id: req.params.postId },
+    { $pull: { comments: req.params.commentId}},
+    { new: true }
+  )
+
+  await Comment.findOneAndDelete({ _id: req.params.commentId })
+
+  res.json(isDeleted)
+})
+
 
 export const remove = ash(async (req, res) => { 
   await res.post.remove()

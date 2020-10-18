@@ -42,4 +42,5 @@ const schema = new Schema({
   versionKey: false
 })
 
+
 export default model('Post', schema.plugin(slug))

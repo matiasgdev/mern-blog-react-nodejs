@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const commentSchema = new schema({
+const commentSchema = new Schema({
   content: {
     type: String,
     required: true
@@ -8,11 +8,18 @@ const commentSchema = new schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
+  },
+  post: {
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
   }
 },{
   timestamps: true,
   versionKey: false
 })
+
+// commentSchema.methods.isOwnerOfPost = function isOwnerOfPost(userId) {
+// }
 
 
 export default model('Comment', commentSchema)
