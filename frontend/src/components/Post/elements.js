@@ -75,7 +75,7 @@ export const CommentIcon = styled(AiOutlineComment)`
 
 `
 
-export const LikeCounterContainer = styled.span`
+export const LikesCounterContainer = styled.span`
 
 `
 

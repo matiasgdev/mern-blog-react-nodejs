@@ -12,8 +12,7 @@ import {
   LikeCount,
   CommentsCounterContainer,
   CommentCount,
-  LikeIcon,
-  Content
+  Content 
 } from './elements'
 
 export default function Post({
@@ -37,7 +36,7 @@ export default function Post({
             Creado por {user.username}
           </DetailItem>
           <LikesCounterContainer>
-            <LikeCount>{likes}</LikeCount>
+            <LikeCount>{likes.length}</LikeCount>
             <LikeIcon />
           </LikesCounterContainer>
           <CommentsCounterContainer>

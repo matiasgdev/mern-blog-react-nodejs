@@ -10,6 +10,9 @@ import {
   POST_DETAIL_SUCCESS,
   POST_DETAIL_ERROR,
   POST_DETAIL_CLEAR,
+  POST_UPDATE_LIKES_ERROR,
+  POST_UPDATE_LIKES_SUCCESS,
+  POST_UPDATE_LIKES_REQUEST
 } from '../types/postTypes'
 
 export const getPostsReducer = (state = { data: [] }, action) => {
@@ -38,6 +41,7 @@ export const createPostReducer = (state = {}, action) => {
     default: return state
   }
 }
+
 export const detailPostReducer = (state = {}, action) => {
   switch(action.type) {
     case POST_DETAIL_REQUEST:
@@ -48,6 +52,18 @@ export const detailPostReducer = (state = {}, action) => {
       return { loading: false, error: action.payload }
     case POST_DETAIL_CLEAR:
       return { }
+    default: return state
+  }
+}
+
+export const updateLikesPostReducer = (state ={}, action) => {
+  switch(action.type) {
+    case POST_UPDATE_LIKES_REQUEST:
+      return { loading: true }
+    case POST_UPDATE_LIKES_SUCCESS:
+      return { loading: false, likes: action.payload }
+    case POST_UPDATE_LIKES_ERROR:
+      return { loading: false, error: action.payload }
     default: return state
   }
 }

@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import {AiOutlineHeart} from 'react-icons/ai'
+import {AiFillHeart} from 'react-icons/ai'
 
 export const DetailPageContainer = styled.div`
   min-height: 100vh;
@@ -100,7 +102,7 @@ export const MainContent = styled.div`
   justify-content: center;
 `
 export const Image = styled.img`
-  height: 100%;
+  height: 36em;
   width: calc(100% - 6em);
   object-fit: cover;
 `
@@ -122,7 +124,9 @@ export const MoreDetails = styled.div`
   width: calc(100% - 6em);
   height: max-content;
   display: flex;
-  justify-content: space-space-between;
+  justify-content: space-between;
+  margin-bottom: 1.5em;
+
 `
 
 export const SeeCommentsButton = styled.a`
@@ -131,7 +135,6 @@ export const SeeCommentsButton = styled.a`
   font-weight: 400;
   text-transform: uppercase;
   display: inline-block;
-  margin-bottom: 1.5em;
   color: gray;
   padding: .5em 1em;
   border: 1px solid rgba(33,33,33, 0.2);
@@ -141,4 +144,131 @@ export const SeeCommentsButton = styled.a`
     color: black;
     border-color: black;
   }
+`
+
+export const CreateCommentContainer = styled.div`
+  width: 100%;
+`
+
+export const FormComment = styled.form`
+  width: 100%;
+  display: flex;
+  height: 4em;
+`
+
+export const InputComment = styled.textarea`
+  width: 100%;
+  height: 100%;
+  padding: .5em;
+  border: 1px solid rgba(33,33,33, 0.1);
+  border-right: none;
+  resize: none;
+  margin: 0;
+
+  &:focus {
+    border-color: rgba(33,33,33,0.2);
+  }
+`
+export const ButtonComment = styled.button`
+  border: none;
+  outline: none;
+  display: inline-block;
+  height: 100%;
+  width: 20%;
+  border: 1px solid rgba(33,33,33, 0.1);
+  font-size: .9em;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: gray;
+  cursor: pointer;
+
+  &:hover {
+    color: black;
+  }
+  
+
+`
+export const CommentContainer = styled.div`
+  width: calc(100% - 6em);
+  display: ${({showComment}) => {
+    return showComment ? 'block' : 'none'
+  }};
+
+`
+
+
+export const UserCommentsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 1.5em 0;
+  
+`
+
+export const UserComment = styled.div`
+  /* height: ${({showMoreComment}) => {
+    return showMoreComment ? 'auto' : ' 3em';
+  }}; */
+  margin-bottom: .5em;
+  padding: .3em 0;
+  border-bottom: 1px solid rgba(0,0,0, 0.08);
+`
+export const UserCommentContent = styled.p`
+  width: 100%;
+  margin: 0;
+  text-align: left;
+  color: gray;
+  font-size: .9em;
+  margin-bottom: .3em;
+`
+export const UserCommentInfo = styled.span`
+  display: inline-block;
+  width: min-content;
+  font-size: .8em;
+`
+
+export const LikesContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const LikeIconUnfill = styled(AiOutlineHeart)`
+  font-size: 1.2em; 
+  margin-right: .3em;
+  color: gray;
+
+  transition: all 150ms ease-out;
+  cursor: pointer;
+  &:hover {
+    color: darkgray;
+    transform: scale(1.075);
+  }
+`
+
+export const LikeIconFill = styled(AiFillHeart)`
+  font-size: 1.2em;
+  margin-right: .3em;
+  color: gray;
+  cursor: pointer;
+  
+  &:hover {
+    color: darkgray;
+    transform: scale(1.075);
+  }
+`
+
+export const LikesCount = styled.span`
+  color: gray;
+  font-size: 1em;
+
+`
+
+export const NoCommentsYet = styled.span`
+  display: inline-block;
+  margin: 1.5em 0;
+  color: gray;
+  font-size: .9em;
+  font-style: italic;
+
 `
