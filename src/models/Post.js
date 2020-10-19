@@ -11,6 +11,7 @@ const likeSchema = new Schema({
   timestamps: false
 })
 
+
 const schema = new Schema({
   title: {
     type: String,

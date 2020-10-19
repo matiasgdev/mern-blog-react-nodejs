@@ -93,23 +93,34 @@ export const update = ash(async (req, res) => {
 
 
 export const updateLikesOfPost = ash(async (req, res) => {
+  const post = res.post
+  const user = res.user
 
-  let updatedPost
+  const isAlreadyLike = post.likes.find((like) => {
+    return like.user.toHexString() === user._id.toHexString()
+  })
 
-  if (req.query.like === 'add') {
-    res.post.likes = res.post.likes + 1
-    updatedPost = await res.post.save()
+  if (isAlreadyLike) {
+    post.likes = post.likes.filter((like) => {
+      return like.user.toHexString() !== user._id.toHexString()
+    })
 
-  } else if (req.query.like === 'decrement') {
-    res.post.likes = res.post.likes - 1
-    updatedPost = await res.post.save()
+    const updatedPost = await post.save()
+    const numOfLikes = updatedPost.likes.length
+
+    res.status(201).json({message: 'removed', num: numOfLikes })
 
   } else {
-    res.status(400)
-    throw new Error('Error al actualizar el post')
-  }
+    const like = {
+      user: user._id
+    }
+    post.likes.push(like)
 
-  res.status(201).json(updatedPost.likes)
+    const updatedPost = await post.save()
+    const numOfLikes = updatedPost.likes.length
+    
+    res.status(201).json({message: 'added', num: numOfLikes })
+  }
 
 })
 
