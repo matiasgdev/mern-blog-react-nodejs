@@ -50,7 +50,7 @@ export const list = async (req, res) => {
 
   try {
     const count = await Post.countDocuments()
-    const posts = await Post.find().populate('user', 'username')
+    const posts = await Post.find().populate('user', 'username').populate('comments')
       .limit(pageLimit)
       .skip(pageLimit * (page - 1))
     return res.json({ count, posts: posts, page, pages: Math.ceil(count / pageLimit) })
@@ -64,7 +64,7 @@ export const list = async (req, res) => {
 
 export const detailBySlug = ash(async (req, res) => {
   const detailOfPost = await Post.findOne({ slug: req.params.slug })
-    .populate('user', 'username')
+    .populate('user', 'username').populate('comments')
 
   if (!detailOfPost) {
     res.status(400)
@@ -94,18 +94,22 @@ export const update = ash(async (req, res) => {
 
 export const updateLikesOfPost = ash(async (req, res) => {
 
+  let updatedPost
+
   if (req.query.like === 'add') {
     res.post.likes = res.post.likes + 1
-    const updatedPost = await res.post.save()
-    res.json(updatedPost)
+    updatedPost = await res.post.save()
+
   } else if (req.query.like === 'decrement') {
     res.post.likes = res.post.likes - 1
-    const updatedPost = await res.post.save()
-    res.json(updatedPost)
+    updatedPost = await res.post.save()
+
   } else {
     res.status(400)
     throw new Error('Error al actualizar el post')
-  }   
+  }
+
+  res.status(201).json(updatedPost.likes)
 
 })
 
@@ -124,7 +128,7 @@ export const addCommentToPost = ash(async (req, res) => {
 })
 
 export const deleteComment = ash(async (req, res) => {
-  
+
   const isDeleted = await Post.findOneAndUpdate(
     { _id: req.params.postId },
     { $pull: { comments: req.params.commentId}},

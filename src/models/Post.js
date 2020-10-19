@@ -1,6 +1,16 @@
 import { model, Schema } from 'mongoose'
 import slug from 'mongoose-slug-generator'
 
+
+const likeSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }
+}, {
+  timestamps: false
+})
+
 const schema = new Schema({
   title: {
     type: String,
@@ -33,10 +43,7 @@ const schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Comment'
   }],
-  likes: {
-    type: Number,
-    default: 0
-  }
+  likes: [likeSchema]
 }, {
   timestamps: true, // 
   versionKey: false
