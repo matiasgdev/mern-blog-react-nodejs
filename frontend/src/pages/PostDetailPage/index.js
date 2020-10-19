@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { detail, clearDetails } from '../../actions/postsActions'
 import Loader from '../../components/Loader'
 import Error from '../../components/Error'
+import fetchComments from '../../services/fetchComments'
 
 import {
   DetailPageContainer,
@@ -30,6 +31,14 @@ function PostDetailPage({params}) {
   
   const { postInfo, loading, error } = useSelector(state => state.postDetail)
   const post = postFromCache ? postFromCache : postInfo
+
+  const [showComment, setShowComment] = useState(false)
+
+  const seeComments = () => {
+    setShowComment(prevShowComment => !prevShowComment)
+  }
+
+
 
   useEffect(function() {
     if (!postFromCache) {
@@ -66,10 +75,23 @@ function PostDetailPage({params}) {
                 </Content>
               </TextContainer>
               <MoreDetails>
-                <SeeCommentsButton>
+                <SeeCommentsButton onClick={seeComments}>
                   ver comentarios
                 </SeeCommentsButton>
               </MoreDetails>
+              <div style={{ display: showComment ? 'block' : 'none'}}>
+                {
+                post.comments.length === 0 ? 'No hay comentarios aún' : 
+                post.comments.map(comment => {
+                  return (
+                    <div  key={comment._id}>
+                      <p> {comment.content} </p>
+                      <p> {comment.user} </p>
+                    </div>
+                  )
+                })
+                }
+              </div>
             </MainContent>
           </PostContainer>
         ) : null

@@ -1,4 +1,7 @@
 import styled from 'styled-components'
+import { AiOutlineHeart } from 'react-icons/ai'
+// import { AiFillHeart } from 'react-icons/ai'
+import { AiOutlineComment } from 'react-icons/ai'
 import { Link } from 'wouter'
 
 export const PostItemContainer = styled(Link)`
@@ -49,8 +52,37 @@ export const Description = styled.div`
   font-size: .9em;
 `
 export const DetailsContainer = styled.div`
+
+  display: flex;
+
 `
 export const DetailItem = styled.div`
   font-size: .8em;
   color: #8f8f8f;
 `
+
+export const LikesCounter = styled.span`
+`
+
+export const CommentsCounterContainer = styled.span`
+
+`
+
+export const CommentCount = styled.span`
+
+`
+export const CommentIcon = styled(AiOutlineComment)`
+
+`
+
+export const LikeCounterContainer = styled.span`
+
+`
+
+export const LikeCount = styled.span`
+
+`
+
+export const LikeIcon = styled(AiOutlineHeart)`
+`
+

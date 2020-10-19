@@ -7,6 +7,12 @@ import {
   Description,
   DetailsContainer,
   DetailItem,
+  LikesCounterContainer,
+  LikeIcon,
+  LikeCount,
+  CommentsCounterContainer,
+  CommentCount,
+  LikeIcon,
   Content
 } from './elements'
 
@@ -16,6 +22,8 @@ export default function Post({
     content,
     imagePath,
     slug,
+    likes,
+    comments,
     user = {}}
 ){
   return (
@@ -28,6 +36,13 @@ export default function Post({
           <DetailItem> 
             Creado por {user.username}
           </DetailItem>
+          <LikesCounterContainer>
+            <LikeCount>{likes}</LikeCount>
+            <LikeIcon />
+          </LikesCounterContainer>
+          <CommentsCounterContainer>
+            <CommentCount>{comments.length}</CommentCount>
+          </CommentsCounterContainer>
         </DetailsContainer>
       </ContentContainer>
     </PostItemContainer>
