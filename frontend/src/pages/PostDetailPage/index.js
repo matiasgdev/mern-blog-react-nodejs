@@ -162,7 +162,7 @@ function PostDetailPage({params}) {
                   <NoCommentsYet>No hay comentarios</NoCommentsYet> 
                   ) : (
                   <UserCommentsContainer>
-                    {post.comments.map((comment) => (
+                    {post.comments.map(comment => (
                       <UserComment key={comment._id}>
                         <UserCommentInfo>
                           {comment.user.username}
