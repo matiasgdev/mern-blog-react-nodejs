@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Link } from 'wouter'
 import { Button } from '../../style'
 
 
@@ -39,13 +40,16 @@ export const Subtitle = styled.div`
   font-size: 1.4em;
 `
 
-export const CreatePostItem = styled(Button)`
-  font-size: .9em;
+export const CreatePostItem = styled(Link)`
+  font-size: 1em;
   display: inline-block;
   position: absolute;
+  text-decoration: none;
   right: 0;
   top: 0;
+  color: rgb(89,9,149);
+
   &:hover {
-    background-color: initial;
+    text-decoration: underline;
   }
 `

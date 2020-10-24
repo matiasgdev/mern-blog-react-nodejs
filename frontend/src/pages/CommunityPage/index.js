@@ -26,6 +26,8 @@ export default function CommunityPage({ params }) {
   const dispatch = useDispatch()
   const { error, loading, data = {} } = useSelector(state => state.posts)
 
+  const { userInfo } = useSelector(state => state.userLogin)
+
   const { posts = [], page, pages } = data
 
   useEffect(function() {
@@ -48,7 +50,11 @@ export default function CommunityPage({ params }) {
           <Header>
             <Title>Últimas entradas de la comunidad</Title>
             <Subtitle>Lee los mejores articulos</Subtitle>
-            <CreatePostItem as="a" primary> Crear tu post</CreatePostItem>
+            {userInfo &&
+              <CreatePostItem to="/nueva/publicacion">
+                Crear tu post
+              </CreatePostItem>
+            }
           </Header>
               <ListPostContainer>
                 { posts.length === 0 ? ( 'No hay posts aun') 

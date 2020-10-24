@@ -18,7 +18,7 @@ function App() {
     <Route exact path="/comunidad/:page?" component={CommunityPage}  />
     <Route path="/registrarse" component={RegisterPage} />
     <Route path="/iniciar-sesion" component={LoginPage} />
-    <Route path="/new/post" component={NewPostPage} />
+    <Route path="/nueva/publicacion" component={NewPostPage} />
     <Route path="/publicacion/:slug" component={PostDetailPage} />
     <Route path="/404" component={ErrorPage} />
   </> 

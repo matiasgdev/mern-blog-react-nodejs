@@ -36,7 +36,7 @@ export const Title = styled.div`
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: black;
+  color: #590995;
 `
 
 export const Description = styled.div`
@@ -154,6 +154,10 @@ export const FormComment = styled.form`
   width: 100%;
   display: flex;
   height: 4em;
+
+  &:focus-within {
+    outline: 2px solid rgba(89,9,149, .4);
+  }
 `
 
 export const InputComment = styled.textarea`
@@ -165,9 +169,7 @@ export const InputComment = styled.textarea`
   resize: none;
   margin: 0;
 
-  &:focus {
-    border-color: rgba(33,33,33,0.2);
-  }
+  
 `
 export const ButtonComment = styled.button`
   border: none;
@@ -256,12 +258,11 @@ export const LikesContainer = styled.div`
 export const LikeIconUnfill = styled(AiOutlineHeart)`
   font-size: 1.2em; 
   margin-right: .3em;
-  color: gray;
+  color: #590995;
 
   transition: all 150ms ease-out;
   cursor: pointer;
   &:hover {
-    color: darkgray;
     transform: scale(1.075);
   }
 `
@@ -269,17 +270,16 @@ export const LikeIconUnfill = styled(AiOutlineHeart)`
 export const LikeIconFill = styled(AiFillHeart)`
   font-size: 1.2em;
   margin-right: .3em;
-  color: gray;
+  color: #590995;
   cursor: pointer;
   
   &:hover {
-    color: darkgray;
     transform: scale(1.075);
   }
 `
 
 export const LikesCount = styled.span`
-  color: gray;
+  color: #590995;
   font-size: 1em;
 
 `
