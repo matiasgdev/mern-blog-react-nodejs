@@ -11,7 +11,9 @@ import {
   getPostsReducer,
   createPostReducer,
   detailPostReducer,
-  updateLikesPostReducer
+  updateLikesPostReducer,
+  createCommentPostReducer,
+  deletePostReducer
 } from './reducers/postReducers'
 
 const reducer = combineReducers({
@@ -21,6 +23,8 @@ const reducer = combineReducers({
   postCreate: createPostReducer,
   postDetail: detailPostReducer,
   postUpdateLikes: updateLikesPostReducer,
+  postCreateComment: createCommentPostReducer,
+  postDelete: deletePostReducer,
 })
 
 const userInfoFromCache = localStorage.getItem('userInfo')

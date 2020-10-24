@@ -12,7 +12,13 @@ import {
   POST_DETAIL_CLEAR,
   POST_UPDATE_LIKES_ERROR,
   POST_UPDATE_LIKES_SUCCESS,
-  POST_UPDATE_LIKES_REQUEST
+  POST_UPDATE_LIKES_REQUEST,
+  POST_CREATE_COMMENT_REQUEST,
+  POST_CREATE_COMMENT_SUCCESS,
+  POST_CREATE_COMMENT_ERROR,
+  POST_DELETE_COMMENT_REQUEST,
+  POST_DELETE_COMMENT_SUCCESS,
+  POST_DELETE_COMMENT_ERROR
 } from '../types/postTypes'
 import axios from 'axios'
 
@@ -28,7 +34,8 @@ export const getPosts = ({ page }) => async (dispatch) => {
     dispatch({
       type: POSTS_GET_ERROR,
       payload: e.response && e.response.data.message ?
-        e.response.data.message : e.message
+        e.response.data.message :
+        e.message
     })
   }
 
@@ -53,7 +60,9 @@ export const createPost = ({ data }) => async (dispatch, getState) => {
   } catch (e) {
     dispatch({ 
       type: NEW_POST_ERROR,
-      payload: e.response.data.message
+      payload: e.response && e.response.data.message ?
+        e.response.data.message :
+        e.message
     })
   }
 }
@@ -65,8 +74,12 @@ export const detail = (slug) => async (dispatch) => {
     dispatch({type: POST_DETAIL_SUCCESS, payload: data })
 
   } catch(e) {
-    console.log(e)
-    dispatch({ type: POST_DETAIL_ERROR, payload: e.response.data.message })
+    dispatch({ 
+      type: POST_DETAIL_ERROR,
+      payload: e.response && e.response.data.message ?
+        e.response.data.message :
+        e.message
+    })
   }
 }
 
@@ -94,11 +107,75 @@ export const updateLikes = ({id, slug}) => async (dispatch, getState) => {
     const { data: dataPost } = await axios.get(`${BASE_URL}/${slug}`)
     dispatch({type: POST_DETAIL_SUCCESS, payload: dataPost })
 
-  } catch(error) {
+  } catch(e) {
     dispatch({ type: POST_UPDATE_LIKES_ERROR,
-      payload: error.response && error.response.data.message ? 
-        error.response.data.message : 
-        error.message
+      payload: e.response && e.response.data.message ? 
+        e.response.data.message : 
+        e.message
     })
   }
 }
+
+export const createComment = ({id, comment, slug}) => async (dispatch, getState) => {
+  try {
+    dispatch({type: POST_CREATE_COMMENT_REQUEST})
+    const { userLogin: { userInfo } } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userInfo.token}`
+      }
+    }
+
+    await axios.put(
+      `${BASE_URL}/comment/${id}`,
+      {comment},
+      config
+    )
+    dispatch({type: POST_CREATE_COMMENT_SUCCESS})
+
+    const { data: dataPost } = await axios.get(`${BASE_URL}/${slug}`)
+    dispatch({type: POST_DETAIL_SUCCESS, payload: dataPost })
+
+  }catch(e) {
+    dispatch({ type: POST_CREATE_COMMENT_ERROR,
+      payload: e.response && e.response.data.message ? 
+        e.response.data.message : 
+        e.message
+    })
+  }
+}
+
+export const deleteComment = ({postId, commentId, slug}) => async (dispatch, getState) => {
+  
+  try {
+    const { userLogin: { userInfo } } = getState()
+    dispatch({type: POST_DELETE_COMMENT_REQUEST})
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userInfo ? userInfo.token : null}`
+      }
+    }
+
+    await axios.delete(
+      `${BASE_URL}/comment/${postId}/${commentId}`,
+      config
+    )
+
+    dispatch({type: POST_DELETE_COMMENT_SUCCESS})
+
+    const { data: dataPost } = await axios.get(`${BASE_URL}/${slug}`)
+    dispatch({type: POST_DETAIL_SUCCESS, payload: dataPost })
+
+  }catch(e) {
+    dispatch({ type: POST_DELETE_COMMENT_ERROR,
+      payload: e.response && e.response.data.message ? 
+        e.response.data.message : 
+        e.message
+    })
+  }
+}
+

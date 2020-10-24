@@ -44,29 +44,40 @@ export const create = ash(async (req, res) => {
   
 })
 
-export const list = async (req, res) => {
+export const list = ash(async (req, res) => {
   const pageLimit = 5
   const page = Number(req.query.page) || 1
 
-  try {
-    const count = await Post.countDocuments()
-    const posts = await Post.find().populate('user', 'username').populate('comments')
-      .limit(pageLimit)
-      .skip(pageLimit * (page - 1))
-    return res.json({ count, posts: posts, page, pages: Math.ceil(count / pageLimit) })
-  } catch(err) {
-    res.status(500).json({ message: 'Ocurrio un error, intente luego', error: err.message })
-  }
+  const count = await Post.countDocuments()
+  const posts = await Post.find()
+    .populate('user', 'username')
+    .populate('comments')
+    .limit(pageLimit)
+    .skip(pageLimit * (page - 1))
+
+  return res.json({ 
+    count,
+    posts,
+    page,
+    pages: Math.ceil(count / pageLimit)
+  })
+})
+
+export const detail = async (req, res) => {
+  res.json({ post: res.post })
 }
-// export const detail = async (req, res) => {
-//   res.json({ post: res.post })
-// }
 
 export const detailBySlug = ash(async (req, res) => {
   const detailOfPost = await Post.findOne({ slug: req.params.slug })
-    .populate('user', 'username').populate('comments')
+    .populate('user', 'username').populate({
+      path: 'comments',
+      populate: {
+        path: 'user',
+        select: 'username'
+      }
+    })
 
-  if (!detailOfPost) {
+  if (!detailOfPost) {    
     res.status(400)
     throw new Error(`No existe el post ${req.params.slug}`)
   }
@@ -128,14 +139,9 @@ export const addCommentToPost = ash(async (req, res) => {
   res.post.comments.push(res.comment._id)
   await res.post.save()
 
-  const post = await Post.findOne({_id: res.post._id}).populate('comments')
+  await Post.findOne({_id: res.post._id})
 
-  res.json({
-    postId: post._id,
-    comment: res.comment._id,
-    comments: post.comments,
-    count: post.comments.length
-  })
+  res.json({message: 'Se envió el comentario correctamente'})
 })
 
 export const deleteComment = ash(async (req, res) => {

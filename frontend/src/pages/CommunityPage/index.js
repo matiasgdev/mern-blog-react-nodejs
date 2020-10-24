@@ -42,7 +42,7 @@ export default function CommunityPage({ params }) {
           <Loader /> 
         ) : 
         error ? (
-          <Error error={error}/>
+          error
         ) : (
         <CommunityContainer>
           <Header>

@@ -1,5 +1,5 @@
 import config from '../config'
-import jwt from 'jsonwebtoken'
+import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 import User from '../models/User'
 import ash from 'express-async-handler'
 
@@ -18,6 +18,9 @@ export const verifyToken = ash(async (req, res, next) => {
       res.status(401)
       throw new Error('Usuario no encontrado. Intente iniciando sesión')
     }
+
+    console.log(user)
+
     res.user = user
     next()
 

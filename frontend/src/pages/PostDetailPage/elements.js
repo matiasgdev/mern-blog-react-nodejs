@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import {AiOutlineHeart} from 'react-icons/ai'
 import {AiFillHeart} from 'react-icons/ai'
 
@@ -180,10 +180,16 @@ export const ButtonComment = styled.button`
   font-weight: 400;
   text-transform: uppercase;
   color: gray;
-  cursor: pointer;
 
-  &:hover {
-    color: black;
+  ${({disabled}) => !disabled &&
+    css`
+      cursor: pointer;
+      background-color: #590995;
+      color: white;
+      &:hover {
+        background-color: #4e0882;
+      }
+    `
   }
   
 
@@ -209,22 +215,36 @@ export const UserComment = styled.div`
   /* height: ${({showMoreComment}) => {
     return showMoreComment ? 'auto' : ' 3em';
   }}; */
-  margin-bottom: .5em;
+  margin-bottom: 1em;
   padding: .3em 0;
   border-bottom: 1px solid rgba(0,0,0, 0.08);
+  position: relative;
+  display: flex;
+  flex-direction: column;
 `
 export const UserCommentContent = styled.p`
   width: 100%;
   margin: 0;
   text-align: left;
-  color: gray;
-  font-size: .9em;
+  color: #535353;
+  font-size: 1.2em;
   margin-bottom: .3em;
+  font-weight: 300;
 `
 export const UserCommentInfo = styled.span`
   display: inline-block;
   width: min-content;
+  font-size: 1.1em;
+  margin-bottom: .3em;
+  font-weight: 400;
+`
+
+export const UserCommentDate = styled.span`
+  display: inline-block;
+  color: gray;
   font-size: .8em;
+  margin-bottom: 1em;
+  text-transform: uppercase;
 `
 
 export const LikesContainer = styled.div`
@@ -272,3 +292,4 @@ export const NoCommentsYet = styled.span`
   font-style: italic;
 
 `
+

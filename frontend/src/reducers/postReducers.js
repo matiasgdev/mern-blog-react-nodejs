@@ -12,7 +12,14 @@ import {
   POST_DETAIL_CLEAR,
   POST_UPDATE_LIKES_ERROR,
   POST_UPDATE_LIKES_SUCCESS,
-  POST_UPDATE_LIKES_REQUEST
+  POST_UPDATE_LIKES_REQUEST,
+  POST_CREATE_COMMENT_REQUEST,
+  POST_CREATE_COMMENT_SUCCESS,
+  POST_CREATE_COMMENT_ERROR,
+  POST_DELETE_COMMENT_REQUEST,
+  POST_DELETE_COMMENT_SUCCESS,
+  POST_DELETE_COMMENT_ERROR,
+  POST_DELETE_COMMENT_CLEAR
 } from '../types/postTypes'
 
 export const getPostsReducer = (state = { data: [] }, action) => {
@@ -47,7 +54,7 @@ export const detailPostReducer = (state = {}, action) => {
     case POST_DETAIL_REQUEST:
       return { loading: true }
     case POST_DETAIL_SUCCESS:
-      return { loading: false, postInfo: action.payload }
+      return { loading: false, post: action.payload }
     case POST_DETAIL_ERROR:
       return { loading: false, error: action.payload }
     case POST_DETAIL_CLEAR:
@@ -67,3 +74,30 @@ export const updateLikesPostReducer = (state ={}, action) => {
     default: return state
   }
 }
+
+export const createCommentPostReducer = (state = {}, action) => {
+  switch(action.type) {
+    case POST_CREATE_COMMENT_REQUEST:
+      return { loading: true }
+    case POST_CREATE_COMMENT_SUCCESS:
+      return { loading: false, success: true }
+    case POST_CREATE_COMMENT_ERROR:
+      return { loading: false, error: action.payload }
+    default: return state
+  }
+}
+
+export const deletePostReducer = (state = {}, action) => {
+  switch(action.type) {
+    case POST_DELETE_COMMENT_REQUEST:
+      return { loading: true }
+    case POST_DELETE_COMMENT_SUCCESS:
+      return { loading: false, success: true }
+    case POST_DELETE_COMMENT_ERROR:
+      return { loading: false, error: action.payload }
+    case POST_DELETE_COMMENT_CLEAR:
+      return { }
+    default: return state
+  }
+}
+
