@@ -1,11 +1,10 @@
 import React from 'react'
+import {ErrorContainer} from './elements'
 
-const Error = ({error: message}) => {
+export default function Error({message}) {
   return (
-    <span>
+    <ErrorContainer>
       {message}
-    </span>
+    </ErrorContainer>
   )
 }
-
-export default Error

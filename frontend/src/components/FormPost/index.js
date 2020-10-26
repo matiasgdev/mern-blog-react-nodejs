@@ -26,18 +26,11 @@ export default function FormPost() {
     }
   }, [postInfo, pushLocation])
 
-  const formStyles = {
-    display: 'flex', 
-    flexDirection: 'column',
-    alignItems: 'flex-start'
-  }
-
   return (
     <>
       { loading && <Loader />}
       { error && error }
       <form
-        style={formStyles}
         onSubmit={handleSubmit}
         ref={formRef}
       >
@@ -60,7 +53,12 @@ export default function FormPost() {
           type="file"
           name="post_image"
         />
-        <button>Crear post</button>
+        <button
+          disabled={loading}
+          type="submit"
+        >
+          Crear post
+        </button>
       </form>
     </>
   )

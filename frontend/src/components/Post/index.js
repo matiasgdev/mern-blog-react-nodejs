@@ -6,12 +6,13 @@ import {
   Title,
   Description,
   DetailsContainer,
-  DetailItem,
+  CreatedBy,
   LikesCounterContainer,
   LikeIcon,
   LikeCount,
   CommentsCounterContainer,
   CommentCount,
+  CommentIcon,
   Content 
 } from './elements'
 
@@ -27,20 +28,21 @@ export default function Post({
 ){
   return (
     <PostItemContainer to={`/publicacion/${slug}`}>
-      <ImageContainer  src={imagePath} loading="lazy" />
+      <ImageContainer src={imagePath} loading="lazy" />
       <ContentContainer>
         <Title>{title}</Title>
         <Description>{description}</Description>
+        <CreatedBy> 
+          Creado por {user.username}
+        </CreatedBy>
         <DetailsContainer>
-          <DetailItem> 
-            Creado por {user.username}
-          </DetailItem>
           <LikesCounterContainer>
             <LikeCount>{likes.length}</LikeCount>
             <LikeIcon />
           </LikesCounterContainer>
           <CommentsCounterContainer>
             <CommentCount>{comments.length}</CommentCount>
+            <CommentIcon />
           </CommentsCounterContainer>
         </DetailsContainer>
       </ContentContainer>

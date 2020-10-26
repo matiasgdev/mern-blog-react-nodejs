@@ -65,7 +65,7 @@ export const Input = styled.input`
 export const Button = styled.button`
   border: none;
   outline: none;
-  margin-top: 2.5em;
+  margin: 2.5em 0;
   font-size: 1.1em;
   align-self: flex-start;
   padding: .7em 1.3em;

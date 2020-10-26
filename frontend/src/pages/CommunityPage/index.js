@@ -40,7 +40,7 @@ export default function CommunityPage({ params }) {
   
   return (
     <Community>
-      { loading ? (
+      {loading ? (
           <Loader /> 
         ) : 
         error ? (
@@ -51,18 +51,22 @@ export default function CommunityPage({ params }) {
             <Title>Últimas entradas de la comunidad</Title>
             <Subtitle>Lee los mejores articulos</Subtitle>
             {userInfo &&
-              <CreatePostItem to="/nueva/publicacion">
-                Crear tu post
-              </CreatePostItem>
+              <>
+                Aporta a la comunidad, {' '}
+                <CreatePostItem to="/nueva/publicacion">
+                  crea tu propia publicación
+                </CreatePostItem>
+              </>
             }
           </Header>
               <ListPostContainer>
-                { posts.length === 0 ? ( 'No hay posts aun') 
-                  : (
-                    <> 
-                      { posts.map(post => <Post key={post._id} {...post} />) }
-                      <Pagination pages={pages} page={page}/>
-                    </>
+                {posts.length === 0 ? ('No hay posts aun') : (
+                  <> 
+                    {posts.map(post => (
+                      <Post key={post._id} {...post} />
+                    ))}
+                    <Pagination pages={pages} page={page}/>
+                  </>
                 )}
               </ListPostContainer>
         </CommunityContainer>

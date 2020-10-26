@@ -4,16 +4,17 @@ import styled from 'styled-components'
 export const PaginationContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-top: 2em;
 
   
 `
 
 export const PaginationContent = styled.div`
   width: max-content;
+  height: 26px;
   display: flex;
   align-items: center;
-  height: 26px;
   
   box-shadow: 0 0 0 .5px rgba(33,33,33, 0.075);
 
@@ -53,7 +54,6 @@ export const Button = styled.button`
   cursor: pointer;
 
   background-color: #e1e1e1; 
-
 
   &:hover {
     background-color: #cecece;

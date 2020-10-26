@@ -31,6 +31,7 @@ export default function FormRegister() {
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ confirmPassword, setConfirmPassword ] = useState('')
+
   const [ message, setMessage] = useState('')
 
   const handleSubmit = async (e) => {
@@ -50,7 +51,11 @@ export default function FormRegister() {
       return
     }
     
-    dispatch(signin(email, username, password))
+    dispatch(signin({
+      email,
+      password,
+      username
+    }))
     
   }
 
@@ -93,7 +98,7 @@ export default function FormRegister() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                message={message.includes('nick')}
+                message={message.includes('usuario')}
               >
               </Input>
             </FormGroup>

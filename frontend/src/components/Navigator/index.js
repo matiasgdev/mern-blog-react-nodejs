@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../../actions/userActions'
-import { Link, useRoute } from 'wouter'
+import { Link, useRoute, useLocation } from 'wouter'
 import {
   Header,
   HeaderContainer,
@@ -17,7 +17,9 @@ import {
 import { Button } from '../../style'
 
 const ActiveLink = props => {
-  const [isActive] = useRoute(props.href);
+  const match = props.href.includes('comunidad') ? '/comunidad' : props.href
+
+  const [isActive] = useRoute(match);
   return (
     <Link {...props}>
       <NavbarLink isActive={isActive}> {props.children} </NavbarLink>
@@ -34,6 +36,10 @@ const Navigator = () => {
   const [show, setShow] = useState()
   const showSidebar = () => {
     setShow(preShow => !preShow)
+  }
+
+  const handleLogout = () => {
+    dispatch(logout())
   }
 
   return (
@@ -54,7 +60,7 @@ const Navigator = () => {
           </NavbarItem>
           {userInfo ? (
             <>
-              <NavbarItem uneffect onClick={() => dispatch(logout())}>
+              <NavbarItem uneffect onClick={handleLogout}>
                 <NavbarLink href="/">Cerrar sesión</NavbarLink>
               </NavbarItem>
             </>

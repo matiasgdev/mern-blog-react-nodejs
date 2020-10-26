@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, clear } from '../../actions/userActions'
 import { useLocation } from 'wouter'
+import { Link } from 'wouter'
 import Loader from '../../components/Loader'
 import Error from '../../components/Error'
 
@@ -85,6 +86,12 @@ const  LoginPage = () => {
               ) : (
                 <Loader/>
               )}
+            </FormGroup>
+            <FormGroup>
+              Aún no tienes una cuenta creada? {' '}
+              <Link to='/registrarse'>
+                Registrate aqui
+              </Link>
             </FormGroup>
           </Form>
         </FormContainer>

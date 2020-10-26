@@ -20,12 +20,10 @@ export const CommunityContainer = styled.div`
 `
 
 export const ListPostContainer = styled.div`
-  
+  margin-top: 1.5em;
 `
 
 export const Header = styled.header`
-  position: relative;
-  margin-bottom: 3em;
 `
 
 export const Title = styled.h2`
@@ -41,9 +39,9 @@ export const Subtitle = styled.div`
 `
 
 export const CreatePostItem = styled(Link)`
+  margin: 1.5em 0 0 0;
   font-size: 1em;
   display: inline-block;
-  position: absolute;
   text-decoration: none;
   right: 0;
   top: 0;
@@ -53,3 +51,5 @@ export const CreatePostItem = styled(Link)`
     text-decoration: underline;
   }
 `
+
+

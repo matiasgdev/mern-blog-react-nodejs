@@ -1,14 +1,13 @@
 import React from 'react'
 import { useLocation } from 'wouter'
 
-import { PaginationContainer,
-   PaginationContent,
-   Button,
-   List,
-   Item
+import { 
+  PaginationContainer,
+  PaginationContent,
+  Button,
+  List,
+  Item
 } from './elements'
-
-
 
 function Pagination({pages, page}) {
   let initialNumberOfPage =  1
@@ -32,30 +31,28 @@ function Pagination({pages, page}) {
   }
 
   const handleGoTo = (page) => {
-
     pushLocation(`/comunidad/${page}`)
-
   }
 
   return (
 
     <PaginationContainer>
       <PaginationContent>
-        { page > 1 ? 
-          <Button prev onClick={handlePrevPage}> &lt; </Button> : null
+        {page > 1 &&
+          <Button prev onClick={handlePrevPage}> &lt; </Button>
         }
         <List>
-          { pageList.map(pageItem => (
+          {pageList.map(pageItem => (
             <Item 
               isActual={pageItem === page}
               key={pageItem}
-              onClick={() => handleGoTo(pageItem)} >
+              onClick={() => handleGoTo(pageItem)}
+            >
               {pageItem}
             </Item>
           ))}
         </List>
-        { page === pages ?
-           null : 
+        {page < pages &&
           <Button prev onClick={handleNextPage}> &gt; </Button>
         }
       </PaginationContent>

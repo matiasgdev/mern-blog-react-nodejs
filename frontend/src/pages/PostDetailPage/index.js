@@ -139,7 +139,7 @@ function PostDetailPage({params}) {
                   <CreateCommentContainer>
                     <FormComment onSubmit={(e) => {
                       e.preventDefault()
-                      dispatch(createComment({ slug, id: post._id, comment: postComment}))
+                      dispatch(createComment({slug, id: post._id, comment: postComment}))
                       setPostComment('')
                     }}>
                       <InputComment 

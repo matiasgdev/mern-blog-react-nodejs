@@ -1,19 +1,19 @@
 import styled from 'styled-components'
-import { AiOutlineHeart } from 'react-icons/ai'
-// import { AiFillHeart } from 'react-icons/ai'
-import { AiOutlineComment } from 'react-icons/ai'
+import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai'
 import { Link } from 'wouter'
 
 export const PostItemContainer = styled(Link)`
+  width: 100%;
+  display: flex;
+  margin-bottom: .5em;
+  padding: .5em;
+  position: relative;
+
   color: none;
   text-decoration: none;
-  display: flex;
-  width: 100%;
-  margin-bottom: .5em;
   background-color: rgb(246,246,246);
   border: 1px solid rgba(33,33,33, 0.1);
   border-radius: 10px;
-  padding: .5em;
 
   &:hover {
     background-color: rgb(250,250,250);
@@ -52,37 +52,69 @@ export const Description = styled.div`
   font-size: .9em;
 `
 export const DetailsContainer = styled.div`
-
+  position: absolute;
+  width: max-content;
+  top: 0;
+  right: 0;
   display: flex;
+  justify-content: space-between;
 
 `
-export const DetailItem = styled.div`
+export const CreatedBy = styled.div`
   font-size: .8em;
   color: #8f8f8f;
 `
 
 export const LikesCounter = styled.span`
+  color: #590995;
+  font-size: 1em;
+
 `
 
 export const CommentsCounterContainer = styled.span`
-
-`
-
-export const CommentCount = styled.span`
-
-`
-export const CommentIcon = styled(AiOutlineComment)`
-
+  display: flex;
+  justify-content: center;
+  align-items: center;  
 `
 
 export const LikesCounterContainer = styled.span`
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: .5em;
 `
 
+export const CommentCount = styled.span`
+  color: #590995;
+  font-size: .9em;
+  font-weight: 400;
+
+`
+export const CommentIcon = styled(AiOutlineComment)`
+  font-size: 1.2em;
+  margin-right: .3em;
+  color: #590995;
+  margin-left: .1em;
+`
+
+
+
 export const LikeCount = styled.span`
+  color: #590995;
+  font-size: .9em;
+  font-weight: 400;
 
 `
 
 export const LikeIcon = styled(AiOutlineHeart)`
+  font-size: 1.2em;
+  margin-left: .1em;
+  color: #590995;
+
 `
 
+export const LikesCount = styled.span`
+  color: #590995;
+  font-size: 1em;
+
+`
