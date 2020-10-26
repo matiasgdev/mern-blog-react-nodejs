@@ -74,5 +74,5 @@ export const Button = styled.button`
   &:hover, &:focus {
     outline: 2px solid #219509;
   }
-  
+
 `

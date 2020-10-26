@@ -54,7 +54,7 @@ const  LoginPage = () => {
           Iniciar sesión
         </Title>
         <FormContainer>
-          { errorUser && <Error message={errorUser} />}
+          {errorUser && <Error message={errorUser} />}
           <Form
             onSubmit={handleSubmit}
             autoComplete="off"

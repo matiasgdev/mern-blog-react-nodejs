@@ -7,5 +7,5 @@ export const ErrorContainer = styled.span`
   color: red;
   margin-bottom: 1.3em;
   font-weight: 400;
-  font-size: 1.1em;
+  font-size: 1.3em;
 `

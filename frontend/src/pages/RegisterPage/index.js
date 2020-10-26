@@ -76,7 +76,7 @@ export default function FormRegister() {
           Registrarse
         </Title>
         <FormContainer>
-          { message && <Error message={message} /> }
+          {message && <Error message={message} />}
           <Form
             onSubmit={handleSubmit}
             autoComplete="off"

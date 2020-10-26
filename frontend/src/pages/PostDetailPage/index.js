@@ -67,6 +67,7 @@ function PostDetailPage({params}) {
   }
 
 
+  // focus input when open comments info
   useEffect(function() {
     if (inputRef.current) {
       inputRef.current.focus()
@@ -75,7 +76,7 @@ function PostDetailPage({params}) {
   }, [showComment, inputRef])
 
 
-
+  
   useEffect(function() {
     dispatch(detail(slug))
     return () => dispatch(clearDetails())
