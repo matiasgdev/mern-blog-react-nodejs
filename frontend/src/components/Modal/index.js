@@ -1,8 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { createPortal } from 'react-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import {deleteComment} from '../../actions/postsActions'
-import { POST_DELETE_COMMENT_CLEAR } from '../../types/postTypes'
 
 import {
   ModalContainer,
@@ -13,44 +10,38 @@ import {
   CloseButton
 } from './elements'
 
-const Modal = ({ open, handleModal, postId, commentId, slug }) => {
-  const dispatch = useDispatch()
-  const {loading, error, success} = useSelector(state => state.postDelete)
-
-  const handleDeleteComment = () => {
-    dispatch(deleteComment({postId, commentId, slug}))
-  }
+const Modal = ({
+  open,
+  handleOpenModal,
+  message,
+  action,
+  loading,
+  error,
+  success
+}) => {
   
-  useEffect(() => {
-    return () => {
-      dispatch({type: POST_DELETE_COMMENT_CLEAR })
-    }
-  }, [])
   
-
   if (!open) return null
-
 
   return createPortal(
     <ModalContainer>
       <ModalWrapper open={open}>
         {error ? error : (
           <>
-            <ModalTitle>¿Estás seguro de borrar este comentario?</ModalTitle>
+            <ModalTitle>{message}</ModalTitle>
             {success && 'Se borro exitosamente'}
             {loading ? null : (
               <ModalDetails>
-                <Button confirm onClick={handleDeleteComment}>Seguro</Button>
-                <Button cancel onClick={handleModal}>Cancelar</Button>
+                <Button confirm onClick={action}>Seguro</Button>
+                <Button cancel onClick={handleOpenModal}>Cancelar</Button>
               </ModalDetails>
             )}
           </>
         )}
-        <CloseButton onClick={handleModal}/>
+        <CloseButton onClick={handleOpenModal}/>
       </ModalWrapper>
     </ModalContainer>,
-    document.getElementById('modal')
+    document.body
   )
 }
-
 export default Modal

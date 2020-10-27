@@ -43,7 +43,7 @@ router.put('/comment/:id', verifyToken, findPostById, createComment, addCommentT
 router.delete('/comment/:postId/:commentId', verifyToken, findPostById, isOwnerOfComment, deleteComment)
 
 // delete post
-router.delete('/:id', verifyToken, isAdmin, findPostById, remove)
+router.delete('/:id', verifyToken, findPostById, remove)
 
 
 export default router

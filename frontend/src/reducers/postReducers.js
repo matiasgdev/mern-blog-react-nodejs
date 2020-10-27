@@ -23,7 +23,11 @@ import {
   POST_UPDATE_REQUEST,
   POST_UPDATE_SUCCESS,
   POST_UPDATE_ERROR,
-  POST_UPDATE_CLEAR
+  POST_UPDATE_CLEAR,
+  POST_DELETE_REQUEST,
+  POST_DELETE_SUCCESS,
+  POST_DELETE_ERROR,
+  POST_DELETE_CLEAR
 } from '../types/postTypes'
 
 export const getPostsReducer = (state = { data: [] }, action) => {
@@ -91,7 +95,7 @@ export const createCommentPostReducer = (state = {}, action) => {
   }
 }
 
-export const deletePostReducer = (state = {}, action) => {
+export const deleteCommentPostReducer = (state = {}, action) => {
   switch(action.type) {
     case POST_DELETE_COMMENT_REQUEST:
       return { loading: true }
@@ -115,6 +119,21 @@ export const updatePostReducer = (state = {}, action) => {
       return { loading: false, error: action.payload }
     case POST_UPDATE_CLEAR: 
       return {}
+    default: return state
+  }
+}
+
+export const deletePostReducer = (state ={}, action) => {
+  switch(action.type) {
+    case POST_DELETE_REQUEST:
+      return { loading: true }
+    case POST_DELETE_SUCCESS:
+      return { loading: false, success: true}
+    case POST_DELETE_ERROR: 
+      return { loading: false, error: action.payload }
+    case POST_DELETE_CLEAR: 
+      return { }
+  
     default: return state
   }
 }

@@ -21,11 +21,25 @@ import {
   POST_DELETE_COMMENT_ERROR,
   POST_UPDATE_REQUEST,
   POST_UPDATE_SUCCESS,
-  POST_UPDATE_ERROR
+  POST_UPDATE_ERROR,
+  POST_DELETE_REQUEST,
+  POST_DELETE_SUCCESS,
+  POST_DELETE_ERROR,
 } from '../types/postTypes'
 import axios from 'axios'
 
 const BASE_URL = `http://localhost:4000/api/post/`
+
+const config = (user = null) => {
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": user ? 
+        `Bearer ${user ? user.token : null}` : 
+        user
+    }
+  }
+}
 
 export const getPosts = ({ page }) => async (dispatch) => {
   dispatch({ type: POSTS_GET_REQUEST })
@@ -48,14 +62,8 @@ export const createPost = ({ data }) => async (dispatch, getState) => {
   try {
     dispatch({ type: NEW_POST_REQUEST })
     const { userLogin: { userInfo } } = getState()
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${userInfo.token}`
-      }
-    }
-    const res = await axios.post(BASE_URL, data, config)
+    
+    const res = await axios.post(BASE_URL, data, config(userInfo))
 
     dispatch({type: NEW_POST_SUCCESS, payload: res.data })
     dispatch({type: NEW_POST_CLEAR })
@@ -74,6 +82,7 @@ export const detail = (slug) => async (dispatch) => {
   try {
     dispatch({type: POST_DETAIL_REQUEST })
     const { data } = await axios.get(`${BASE_URL}/${slug}`)
+
     dispatch({type: POST_DETAIL_SUCCESS, payload: data })
 
   } catch(e) {
@@ -97,13 +106,12 @@ export const updateLikes = ({id, slug}) => async (dispatch, getState) => {
     dispatch({type: POST_UPDATE_LIKES_REQUEST })
     const { userLogin: { userInfo } } = getState()
 
-    const config = {
-      headers: {
-        'Authorization': `Bearer ${userInfo.token}`
-      }
-    }
+    const { data } = await axios.put(
+      `${BASE_URL}/like/${id}`,
+      null,
+      config(userInfo)
+    )
 
-    const { data } = await axios.put(`${BASE_URL}/like/${id}`, null, config)
 
     dispatch({type: POST_UPDATE_LIKES_SUCCESS, payload: data.num })
 
@@ -124,17 +132,10 @@ export const createComment = ({id, comment, slug}) => async (dispatch, getState)
     dispatch({type: POST_CREATE_COMMENT_REQUEST})
     const { userLogin: { userInfo } } = getState()
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${userInfo.token}`
-      }
-    }
-
     await axios.put(
       `${BASE_URL}/comment/${id}`,
       {comment},
-      config
+      config(userInfo)
     )
     dispatch({type: POST_CREATE_COMMENT_SUCCESS})
 
@@ -156,16 +157,9 @@ export const deleteComment = ({postId, commentId, slug}) => async (dispatch, get
     const { userLogin: { userInfo } } = getState()
     dispatch({type: POST_DELETE_COMMENT_REQUEST})
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${userInfo ? userInfo.token : null}`
-      }
-    }
-
     await axios.delete(
       `${BASE_URL}/comment/${postId}/${commentId}`,
-      config
+      config(userInfo)
     )
 
     dispatch({type: POST_DELETE_COMMENT_SUCCESS})
@@ -188,17 +182,11 @@ export const updatePost = ({ newData, id }) => async (dispatch, getState) => {
     const { userLogin: { userInfo }} = getState()
     dispatch({type: POST_UPDATE_REQUEST})
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${userInfo ? userInfo.token : null}`
-      }
-    }
 
     const { data } = await axios.put(
       `${BASE_URL}/${id}`,
       newData,
-      config
+      config(userInfo)
     )
 
     dispatch({type: POST_UPDATE_SUCCESS, payload: data})
@@ -213,3 +201,22 @@ export const updatePost = ({ newData, id }) => async (dispatch, getState) => {
   }
 }
 
+
+export const deletePost = ({postId}) => async (dispatch, getState) => {
+  try {
+    dispatch({type: POST_DELETE_REQUEST})
+
+    const { userLogin: { userInfo }} = getState()
+
+    await axios.delete(`${BASE_URL}/${postId}`, config(userInfo))
+    dispatch({type: POST_DELETE_SUCCESS})
+
+  } catch(e) {
+    dispatch({
+      type: POST_DELETE_ERROR,
+      payload: e.response && e.response.data.message ?
+        e.response.data.message :
+        e.message
+    })
+  }
+}

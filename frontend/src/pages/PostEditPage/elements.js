@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { MdClose } from 'react-icons/md'
 
 export const PostEditContainer = styled.div`
   min-height: calc(100vh - 80px);
@@ -11,11 +12,14 @@ export const PostEditContainer = styled.div`
 `
 
 export const Title = styled.h2`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 1.6em;
+  width: 70%;
   margin: 2.3em 0 1.2em 0;
   font-weight: 500;
   color: #5e5d5d;
-  width: 70%;
 `
 
 export const FormContainer = styled.div`
@@ -87,4 +91,11 @@ export const Button = styled.button`
     `
   }
 
+`
+
+export const DeleteIcon = styled(MdClose)`
+  cursor: pointer;
+  &:hover {
+    color: black;
+  }
 `

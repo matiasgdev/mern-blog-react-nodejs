@@ -184,7 +184,7 @@ export const deleteComment = ash(async (req, res) => {
 
 export const remove = ash(async (req, res) => { 
   await res.post.remove()
-  res.status(204)
+  res.json({message: `Publicacion ${res.post._id} eliminada correctamente`})
 })
 
 

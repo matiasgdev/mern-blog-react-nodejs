@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { updatePost, detail } from '../../actions/postsActions'
 import { POST_UPDATE_CLEAR } from '../../types/postTypes'
 import { useLocation } from 'wouter'
+import useModal from '../../hooks/useModal'
+import { deletePost } from '../../actions/postsActions'
+import Modal from '../../components/Modal'
 import Error from '../../components/Error'
 import Loader from '../../components/Loader'
 
@@ -14,7 +17,8 @@ import {
   Button,
   Title,
   FormContainer,
-  Label
+  Label,
+  DeleteIcon
 } from './elements'
 
 export default function PostEditPage({params}) {
@@ -24,12 +28,19 @@ export default function PostEditPage({params}) {
   const { userInfo } = useSelector(state => state.userLogin)
   const { error: errorUpdate = '', loading: loadingUpdate, postUpdated } = useSelector(state => state.postUpdate)
   const { error: errorDetail = '', loading: loadingDetail, post } = useSelector(state => state.postDetail)
+  const {
+    error: errorDelete,
+    loading: loadingDelete,
+    success: successDelete
+  } = useSelector(state => state.postDelete)
   
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     content: ''
   })
+
+  const{ openModal, handleOpenModal } = useModal()
   
   // fetching data
   useEffect(function() {
@@ -61,8 +72,12 @@ export default function PostEditPage({params}) {
     if (postUpdated) {
       pushLocation(`/publicacion/${postUpdated.slug}`)
     }
+    // redirect after 500ms when post was deleted
+    if(successDelete) {
+      setTimeout(() => pushLocation('/comunidad'), 500)
+    }
 
-  }, [userInfo, pushLocation, postUpdated, post])
+  }, [userInfo, pushLocation, postUpdated, successDelete, post])
 
   const handleChange = e => { 
     const input = e.target
@@ -76,6 +91,10 @@ export default function PostEditPage({params}) {
     dispatch(updatePost({newData: formData, id: post._id}))
   }
 
+  const handleDeletePost = () => {
+    dispatch(deletePost({postId: post._id}))
+  }
+
   if (!userInfo) return null
 
   return (
@@ -86,7 +105,19 @@ export default function PostEditPage({params}) {
         ? (
           <>
             <Title>
-              Editar post - {post.title}
+              Editar - {post.title}
+              <DeleteIcon onClick={handleOpenModal}/>
+              {openModal &&
+                <Modal 
+                  open={openModal}
+                  handleOpenModal={handleOpenModal}
+                  loading={loadingDelete}
+                  error={errorDelete}
+                  success={successDelete}
+                  action={handleDeletePost}
+                  message='¿Estás seguro de borrar esta publicación?'
+                />
+              }
             </Title>
             <FormContainer>
               {errorUpdate && <Error message={errorUpdate} />}

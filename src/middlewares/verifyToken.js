@@ -9,17 +9,14 @@ export const verifyToken = ash(async (req, res, next) => {
     req.headers['authorization'].startsWith('Bearer ')
   ){
     const token = req.headers["authorization"].split(' ').pop()
-    
     const decoded = jwt.verify(token, config.SECRET_KEY)
-
+    
     const user = await User.findOne({ _id: decoded.id}, { password: 0})
     
     if (!user) {
       res.status(401)
       throw new Error('Usuario no encontrado. Intente iniciando sesión')
     }
-
-    console.log(user)
 
     res.user = user
     next()
