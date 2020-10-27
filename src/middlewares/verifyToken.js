@@ -1,5 +1,5 @@
 import config from '../config'
-import jwt, { JsonWebTokenError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import User from '../models/User'
 import ash from 'express-async-handler'
 

@@ -14,7 +14,7 @@ export const login = ash(async (req, res) => {
     throw new Error('Debes ingresar una contraseña')
   }
 
-  const user = await User.findOne({ email: req.body.email }).populate('roles')
+  const user = await User.findOne({ email: req.body.email })
   if (!user) {
     res.status(404)
     throw new Error('El usuario no existe')

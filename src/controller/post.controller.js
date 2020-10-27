@@ -63,9 +63,9 @@ export const list = ash(async (req, res) => {
   })
 })
 
-export const detail = async (req, res) => {
-  res.json({ post: res.post })
-}
+// export const detail = async (req, res) => {
+//   res.json({ post: res.post })
+// }
 
 export const detailBySlug = ash(async (req, res) => {
   const detailOfPost = await Post.findOne({ slug: req.params.slug })

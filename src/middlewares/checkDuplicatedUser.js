@@ -6,13 +6,13 @@ export default ash(async (req, res, next) => {
   
   if (emailDuplicated) {
     res.status(400)
-    throw new Error("Ya existe el usuario con ese email")
+    throw new Error("Email en uso. Registrate con otro email")
   } 
   
   const usernameDuplicated = await User.findOne({username: req.body.username}, 'username')
   if (usernameDuplicated) { 
     res.status(400)
-    throw new Error("Ya existe el usuario con ese nick")
+    throw new Error("Nombre de usuario en uso")
   }
   next()
 })

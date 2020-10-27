@@ -31,18 +31,16 @@ export const isOwnerOfComment = ash(async (req, res, next) => {
     res.status(400)
     throw new Error('Comentario no encontrado')
   }
-
-  console.log(comment.user, userId)
   // verify is owner of post or owner of comment
-  const findOwnerOfComment = 
-    comment.user.toString() === userId.toString() || 
-    post.user.toHexString() === userId.toHexString()
 
-  if (!findOwnerOfComment) {
+  const commentOwner = comment.user.toString() === userId.toString()
+  const postOwner = post.user.toString() === userId.toString()
+
+  if (commentOwner || postOwner) {
+    next()
+  } else {
     res.status(403)
     throw new Error('No tienes permisos para borrar el comentario')
-  } else {
-    next()
   }
 
 })
