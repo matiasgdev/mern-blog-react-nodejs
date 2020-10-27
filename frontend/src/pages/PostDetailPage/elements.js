@@ -1,12 +1,14 @@
 import styled, { css } from 'styled-components'
 import {AiOutlineHeart} from 'react-icons/ai'
-import {AiFillHeart} from 'react-icons/ai'
+import {AiFillHeart, AiOutlineEdit} from 'react-icons/ai'
+import { Link } from 'wouter'
 
 export const DetailPageContainer = styled.div`
   min-height: 100vh;
   width: 100%;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   
@@ -25,6 +27,34 @@ export const PostContainer = styled.div`
                       'content content';
 
   border: 1px solid rgba(33,33,33,0.1);
+
+`
+
+export const EditPostWrapper = styled.div`
+  width: 90%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 3em;  
+`
+
+export const EditPostButton = styled(Link)`
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  text-decoration: none;
+
+`
+
+export const EditPostIcon = styled(AiOutlineEdit)`
+  font-size: 1.2em;
+  margin-left: .3em;
+`
+
+export const EditPostText = styled.span`
+  display: inline-block;
 
 `
 

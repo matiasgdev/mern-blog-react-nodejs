@@ -17,9 +17,8 @@ import {
 import { Button } from '../../style'
 
 const ActiveLink = props => {
-  const match = props.href.includes('comunidad') ? '/comunidad' : props.href
 
-  const [isActive] = useRoute(match);
+  const [isActive] = useRoute(props.href);
   return (
     <Link {...props}>
       <NavbarLink isActive={isActive}> {props.children} </NavbarLink>
@@ -29,6 +28,7 @@ const ActiveLink = props => {
 
 const Navigator = () => {
   const dispatch = useDispatch()
+  const [, navigate] = useLocation()
   
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -40,6 +40,7 @@ const Navigator = () => {
 
   const handleLogout = () => {
     dispatch(logout())
+    navigate('/')
   }
 
   return (

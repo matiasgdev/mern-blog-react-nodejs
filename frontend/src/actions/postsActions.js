@@ -18,7 +18,10 @@ import {
   POST_CREATE_COMMENT_ERROR,
   POST_DELETE_COMMENT_REQUEST,
   POST_DELETE_COMMENT_SUCCESS,
-  POST_DELETE_COMMENT_ERROR
+  POST_DELETE_COMMENT_ERROR,
+  POST_UPDATE_REQUEST,
+  POST_UPDATE_SUCCESS,
+  POST_UPDATE_ERROR
 } from '../types/postTypes'
 import axios from 'axios'
 
@@ -174,6 +177,37 @@ export const deleteComment = ({postId, commentId, slug}) => async (dispatch, get
     dispatch({ type: POST_DELETE_COMMENT_ERROR,
       payload: e.response && e.response.data.message ? 
         e.response.data.message : 
+        e.message
+    })
+  }
+}
+
+
+export const updatePost = ({ newData, id }) => async (dispatch, getState) => {
+  try {
+    const { userLogin: { userInfo }} = getState()
+    dispatch({type: POST_UPDATE_REQUEST})
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userInfo ? userInfo.token : null}`
+      }
+    }
+
+    const { data } = await axios.put(
+      `${BASE_URL}/${id}`,
+      newData,
+      config
+    )
+
+    dispatch({type: POST_UPDATE_SUCCESS, payload: data})
+
+  } catch (e) {
+    dispatch({
+      type: POST_UPDATE_ERROR,
+      payload: e.response && e.response.data.message ?
+        e.response.data.message :
         e.message
     })
   }

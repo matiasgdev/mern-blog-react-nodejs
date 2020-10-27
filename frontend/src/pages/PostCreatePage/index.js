@@ -80,7 +80,7 @@ export default function PostCreatePage() {
               textarea/>
           </FormGroup>
           <FormGroup>
-            <Label htmlFo="postImage">Imagen principal</Label>
+            <Label htmlFor="postImage">Imagen principal</Label>
             <Input
               type="file"
               name="post_image"

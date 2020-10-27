@@ -2,8 +2,12 @@ import Post from '../models/Post'
 import User from '../models/User'
 import Comment from '../models/Comment'
 import ash from 'express-async-handler'
-import cloudinary from 'cloudinary'
+import dotenv from 'dotenv'
 
+dotenv.config()
+const serverPath = `http://localhost:${process.env.SERVER_PORT}`
+
+// create new post
 export const create = ash(async (req, res) => {
   if (req.body.title === '') {
     res.status(400)
@@ -33,8 +37,16 @@ export const create = ash(async (req, res) => {
     throw new Error('Ya existe un post con ese titulo')
   }
 
-  const image = await cloudinary.v2.uploader.upload(req.file.path)
-  const post =  new Post({title, description, content, category, imagePath: image.url })
+  const serverPath = `http://localhost:${process.env.SERVER_PORT}/`
+  const filePath = req.file.path.replace('public', 'files')
+
+  const post =  new Post({
+    title,
+    description,
+    content,
+    category,
+    imagePath: serverPath + filePath
+  })
 
   const userData = await User.findOne({ _id: res.user._id })
   post.user = userData._id
@@ -44,14 +56,23 @@ export const create = ash(async (req, res) => {
   
 })
 
+// list posts
 export const list = ash(async (req, res) => {
   const pageLimit = 5
   const page = Number(req.query.page) || 1
 
   const count = await Post.countDocuments()
+  
   const posts = await Post.find()
-    .populate('user', 'username')
-    .populate('comments')
+    .populate([
+      {
+        path: 'user',
+        select: 'username'
+      },
+      {
+        path: 'comments'
+      }
+    ])
     .limit(pageLimit)
     .skip(pageLimit * (page - 1))
 
@@ -67,6 +88,7 @@ export const list = ash(async (req, res) => {
 //   res.json({ post: res.post })
 // }
 
+// detail posd by slug
 export const detailBySlug = ash(async (req, res) => {
   const detailOfPost = await Post.findOne({ slug: req.params.slug })
     .populate('user', 'username').populate({
@@ -84,7 +106,7 @@ export const detailBySlug = ash(async (req, res) => {
   res.json(detailOfPost)
 })
 
-
+// update post
 export const update = ash(async (req, res) => {
   let isSomethingToModify = 0
 
@@ -102,7 +124,7 @@ export const update = ash(async (req, res) => {
   
 })
 
-
+// update likes 
 export const updateLikesOfPost = ash(async (req, res) => {
   const post = res.post
   const user = res.user
@@ -135,6 +157,7 @@ export const updateLikesOfPost = ash(async (req, res) => {
 
 })
 
+// add comment
 export const addCommentToPost = ash(async (req, res) => {
   res.post.comments.push(res.comment._id)
   await res.post.save()
@@ -144,6 +167,8 @@ export const addCommentToPost = ash(async (req, res) => {
   res.json({message: 'Se envió el comentario correctamente'})
 })
 
+
+// delete comment 
 export const deleteComment = ash(async (req, res) => {
 
   const isDeleted = await Post.findOneAndUpdate(

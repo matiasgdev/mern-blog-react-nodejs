@@ -7,6 +7,10 @@ import Error from '../../components/Error'
 import {
   DetailPageContainer,
   PostContainer,
+  EditPostWrapper,
+  EditPostIcon,
+  EditPostText,
+  EditPostButton,
   LeftInfo,
   RightInfo,
   DateInfo,
@@ -47,7 +51,6 @@ function PostDetailPage({params}) {
   const [postComment, setPostComment] = useState('')
   
   const { post, loading, error } = useSelector(state => state.postDetail)
-  
   const { userInfo } = useSelector(state => state.userLogin)
   
   const { likes: likesCount, loading: loadingLike, error: errorLike } = useSelector(state => state.postUpdateLikes)
@@ -59,6 +62,7 @@ function PostDetailPage({params}) {
   
   const [showIconLike, setShowIconLike] = useState(false)
   
+  // update like
   const handleUpdateLikes = () => {
     if (!userInfo) return
     // handle submit likes
@@ -76,13 +80,14 @@ function PostDetailPage({params}) {
   }, [showComment, inputRef])
 
 
-  
+  // refresh state 
   useEffect(function() {
     dispatch(detail(slug))
     return () => dispatch(clearDetails())
 
   }, [dispatch, detail, slug, clearDetails])
 
+  // verify like-icon state
   useEffect(function() {
     let isLiked
     if (post && userInfo) {
@@ -95,9 +100,20 @@ function PostDetailPage({params}) {
 
   return (
     <DetailPageContainer>
+      {/* edit post  */}
+      {post && userInfo && post.user._id === userInfo.user._id &&
+        <EditPostWrapper>
+          <EditPostButton to={`/editar/publicacion/${post.slug}`}>
+            <EditPostText>
+              Editar
+            </EditPostText>
+            <EditPostIcon />
+          </EditPostButton>
+        </EditPostWrapper>
+      }
       {
-        loading ? <Loader size={80} scale="mini"/>
-        : error ? <Error message={error} /> : 
+        loading ? <Loader /> : 
+        error ? <Error message={error} /> : 
         post ? (
           <PostContainer>
             <LeftInfo>

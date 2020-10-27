@@ -8,6 +8,7 @@ import PostCreatePage from './pages/PostCreatePage'
 import PostDetailPage from './pages/PostDetailPage'
 import ErrorPage from './pages/ErrorPage'
 import { Route } from 'wouter'
+import PostEditPage from './pages/PostEditPage'
 
 
 function App() {
@@ -18,7 +19,9 @@ function App() {
     <Route exact path="/comunidad/:page?" component={CommunityPage}  />
     <Route path="/registrarse" component={RegisterPage} />
     <Route path="/iniciar-sesion" component={LoginPage} />
+
     <Route path="/nueva/publicacion" component={PostCreatePage} />
+    <Route path="/editar/publicacion/:slug" component={PostEditPage} />
     <Route path="/publicacion/:slug" component={PostDetailPage} />
     <Route path="/404" component={ErrorPage} />
   </> 
