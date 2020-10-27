@@ -5,7 +5,6 @@ import ash from 'express-async-handler'
 import dotenv from 'dotenv'
 
 dotenv.config()
-const serverPath = `http://localhost:${process.env.SERVER_PORT}`
 
 // create new post
 export const create = ash(async (req, res) => {

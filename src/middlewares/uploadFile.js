@@ -1,5 +1,6 @@
 import multer from 'multer'
 import path from 'path'
+import { nanoid } from 'nanoid'
 
 const manageStorage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -7,7 +8,7 @@ const manageStorage = multer.diskStorage({
   },  
   filename: function(req, file, cb) {
     const date = new Date()
-    let fileName = date.getTime() + file.originalname
+    let fileName = nanoid(5) + path.extname(file.originalname)
     cb(null, fileName)
   }
 }) 
