@@ -22,7 +22,7 @@ const onlyImagesFilter = (file, cb) => {
   if (mimetype && extname) {
     cb(null, true)
   } else {
-    cb(new Error('Solo se permiten imagenes JPG/PNG/JPEG'))
+    cb(new Error('Solo se permiten imagenes'))
   }
 
 }
