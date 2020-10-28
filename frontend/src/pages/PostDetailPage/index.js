@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { detail, clearDetails, updateLikes, createComment } from '../../actions/postsActions'
 import Loader from '../../components/Loader'
 import Error from '../../components/Error'
+import MiniLoader from '../../components/MiniLoader'
 
 import {
   DetailPageContainer,
@@ -135,16 +136,18 @@ function PostDetailPage({params}) {
               </TextContainer>
               <MoreDetails>
                 <LikesContainer>
-                  {!showIconLike ? 
-                    <LikeIconUnfill onClick={handleUpdateLikes} /> : 
-                    <LikeIconFill onClick={handleUpdateLikes} />
-                  }
-                  {loadingLike && !errorLike ? 
-                    <Loader /> : (
-                    <LikesCount >
-                      {post.likes.length}
-                    </LikesCount>)
-                  }
+                  {loadingLike ? 
+                    <MiniLoader /> : (
+                      <>
+                        {!showIconLike ? 
+                          <LikeIconUnfill onClick={handleUpdateLikes} /> : 
+                          <LikeIconFill onClick={handleUpdateLikes} />
+                        }
+                        <LikesCount >
+                          {post.likes.length}
+                        </LikesCount>
+                      </>
+                  )}
                 </LikesContainer>
                 <SeeCommentsButton onClick={seeComments}>
                   {showComment ? 'Ocultar comentarios' : `Ver comentarios (${post.comments.length})`}

@@ -47,6 +47,7 @@ export default function CommunityPage({ params }) {
     }
   }, [pushLocation, pageInfo])
 
+  // get popular posts
   useEffect(function() {
     dispatch(getPopularPosts())
   }, [])

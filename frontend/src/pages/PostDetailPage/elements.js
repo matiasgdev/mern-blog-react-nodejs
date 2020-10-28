@@ -280,6 +280,7 @@ export const UserCommentDate = styled.span`
 `
 
 export const LikesContainer = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
