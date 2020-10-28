@@ -1,9 +1,11 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai'
 import { Link } from 'wouter'
 
 export const PostItemContainer = styled(Link)`
+  min-height: 50px;
   width: 100%;
+  align-self: flex-start;
   display: flex;
   margin-bottom: .5em;
   padding: .5em;
@@ -43,6 +45,13 @@ export const ContentContainer = styled.div`
 export const Title = styled.div`
   font-size: 1.3em;
   justify-self: flex-start;
+
+  ${({popular}) => popular &&
+    css`
+      font-size: 1.1em;
+      margin-bottom: .5em;
+    `
+  }
 `
 
 export const Content = styled.div`

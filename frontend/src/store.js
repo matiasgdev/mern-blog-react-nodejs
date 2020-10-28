@@ -15,13 +15,15 @@ import {
   createCommentPostReducer,
   deleteCommentPostReducer,
   updatePostReducer,
-  deletePostReducer
+  deletePostReducer,
+  getPopularPostsReducer
 } from './reducers/postReducers'
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   posts: getPostsReducer,
+  postsPopular: getPopularPostsReducer,
   postCreate: createPostReducer,
   postDetail: detailPostReducer,
   postUpdateLikes: updateLikesPostReducer,

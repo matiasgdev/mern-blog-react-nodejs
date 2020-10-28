@@ -24,13 +24,16 @@ export default function Post({
     slug,
     likes,
     comments,
+    popular,
     user = {}}
 ){
   return (
     <PostItemContainer to={`/publicacion/${slug}`}>
-      <ImageContainer src={imagePath} loading="lazy" />
+      {imagePath &&
+        <ImageContainer src={imagePath} loading="lazy" />
+      }
       <ContentContainer>
-        <Title>{title}</Title>
+        <Title popular>{title}</Title>
         <Description>{description}</Description>
         <CreatedBy> 
           Creado por {user.username}
@@ -40,10 +43,12 @@ export default function Post({
             <LikeCount>{likes.length}</LikeCount>
             <LikeIcon />
           </LikesCounterContainer>
-          <CommentsCounterContainer>
-            <CommentCount>{comments.length}</CommentCount>
-            <CommentIcon />
-          </CommentsCounterContainer>
+          {comments &&
+            <CommentsCounterContainer>
+              <CommentCount>{comments.length}</CommentCount>
+              <CommentIcon />
+            </CommentsCounterContainer>
+          }
         </DetailsContainer>
       </ContentContainer>
     </PostItemContainer>

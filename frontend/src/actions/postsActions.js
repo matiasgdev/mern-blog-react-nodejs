@@ -2,6 +2,9 @@ import {
   POSTS_GET_REQUEST,
   POSTS_GET_SUCCESS,
   POSTS_GET_ERROR,
+  POSTS_GET_POPULAR_REQUEST,
+  POSTS_GET_POPULAR_SUCCESS,
+  POSTS_GET_POPULAR_ERROR,
   NEW_POST_REQUEST,
   NEW_POST_SUCCESS,
   NEW_POST_ERROR,
@@ -28,7 +31,7 @@ import {
 } from '../types/postTypes'
 import axios from 'axios'
 
-const BASE_URL = `http://localhost:4000/api/post/`
+const BASE_URL = `http://localhost:4000/api/post`
 
 const config = (user = null) => {
   return {
@@ -45,7 +48,10 @@ export const getPosts = ({ page }) => async (dispatch) => {
   dispatch({ type: POSTS_GET_REQUEST })
   try {
     const { data } = await axios.get(`${BASE_URL}?page=${page}`)
-    dispatch({ type: POSTS_GET_SUCCESS, payload: data })
+
+    setTimeout(() => {
+      dispatch({ type: POSTS_GET_SUCCESS, payload: data })
+    }, 2000)
 
   } catch(e) {  
     dispatch({
@@ -56,6 +62,25 @@ export const getPosts = ({ page }) => async (dispatch) => {
     })
   }
 
+}
+
+export const getPopularPosts = () => async dispatch => {
+  try {
+    dispatch({type: POSTS_GET_POPULAR_REQUEST})
+
+    const { data } = await axios.get(`${BASE_URL}/popular`)
+    setTimeout(() => {
+      dispatch({type: POSTS_GET_POPULAR_SUCCESS, payload: data})
+    }, 2000)
+
+  }catch(e) {
+    dispatch({
+      type: POSTS_GET_POPULAR_ERROR,
+      payload: e.response.data.message && e.response ?
+        e.response.data.message :
+        e.message
+    })
+  }
 }
 
 export const createPost = ({ data }) => async (dispatch, getState) => {

@@ -16,12 +16,16 @@ import {
   updateLikesOfPost,
   addCommentToPost,
   deleteComment,
+  listPopular
 } from '../controller/post.controller.js'
 
 const router = Router()
 
 // list posts
 router.get('/', list)
+
+// list popular post
+router.get('/popular', listPopular)
 
 // router.get('/find/:id', findPostById, detail)
 router.get('/:slug', detailBySlug)

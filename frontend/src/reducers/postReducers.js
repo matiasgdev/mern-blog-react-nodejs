@@ -2,6 +2,9 @@ import {
   POSTS_GET_REQUEST,
   POSTS_GET_SUCCESS,
   POSTS_GET_ERROR,
+  POSTS_GET_POPULAR_REQUEST,
+  POSTS_GET_POPULAR_SUCCESS,
+  POSTS_GET_POPULAR_ERROR,
   NEW_POST_REQUEST,
   NEW_POST_SUCCESS,
   NEW_POST_ERROR,
@@ -27,7 +30,8 @@ import {
   POST_DELETE_REQUEST,
   POST_DELETE_SUCCESS,
   POST_DELETE_ERROR,
-  POST_DELETE_CLEAR
+  POST_DELETE_CLEAR,
+  
 } from '../types/postTypes'
 
 export const getPostsReducer = (state = { data: [] }, action) => {
@@ -38,6 +42,19 @@ export const getPostsReducer = (state = { data: [] }, action) => {
     case POSTS_GET_SUCCESS:
       return {  loading: false, data: action.payload }
     case POSTS_GET_ERROR:
+      return { loading: false, error: action.payload }
+    default: return state
+  }
+}
+
+export const getPopularPostsReducer = (state = { popular: [] }, action) => {
+
+  switch(action.type) {
+    case POSTS_GET_POPULAR_REQUEST:
+      return { ...state, loading: true }
+    case POSTS_GET_POPULAR_SUCCESS:
+      return {  loading: false, popular: action.payload }
+    case POSTS_GET_POPULAR_ERROR:
       return { loading: false, error: action.payload }
     default: return state
   }

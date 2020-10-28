@@ -83,6 +83,17 @@ export const list = ash(async (req, res) => {
   })
 })
 
+export const listPopular = ash(async (req, res) => {
+
+  const popularPosts = await Post.find({})
+    .sort({likes: -1})
+    .limit(3)
+    .populate('user', 'username')
+  
+    res.json(popularPosts)
+
+})
+
 // export const detail = async (req, res) => {
 //   res.json({ post: res.post })
 // }
@@ -180,7 +191,6 @@ export const deleteComment = ash(async (req, res) => {
 
   res.json(isDeleted)
 })
-
 
 export const remove = ash(async (req, res) => { 
   await res.post.remove()
