@@ -6,6 +6,7 @@ import Loader from '../../components/Loader'
 import Error from '../../components/Error'
 import Post from '../../components/Post'
 import Pagination from '../../components/Pagination'
+import Headers from '../../components/Header'
 
 import {
   Community,
@@ -54,6 +55,9 @@ export default function CommunityPage({ params }) {
   
   return (
     <Community>
+        <Headers 
+          title="Bloggy | Comunidad"
+        />
         <CommunityContainer>
           <PostsWrapper>
             <LeftContent>

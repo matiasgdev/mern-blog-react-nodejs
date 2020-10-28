@@ -4,6 +4,7 @@ import Error from '../../components/Error'
 import { signin, clear } from '../../actions/userActions'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'wouter'
+import Headers from '../../components/Header'
 
 import {
   LoginPageContainer,
@@ -71,6 +72,9 @@ export default function FormRegister() {
 
   return (
     <LoginPageContainer>
+      <Headers
+          title='Registrarse en Bloggy'
+      />
       <LeftContent>
         <Title>
           Registrarse

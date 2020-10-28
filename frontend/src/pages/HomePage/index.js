@@ -1,9 +1,13 @@
 import React from 'react'
+import Header from '../../components/Header'
 import Hero from '../../components/Hero'
 
-const Home = () => {
+function Home() {
   return (
     <>
+      <Header
+        title="Bloggy | Home"
+        description="Bloggy is a nice blog to read everything about our users" />
       <Hero />
     </>
   )

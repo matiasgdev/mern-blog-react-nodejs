@@ -33,7 +33,7 @@ export default function Post({
         <ImageContainer src={imagePath} loading="lazy" />
       }
       <ContentContainer>
-        <Title popular>{title}</Title>
+        <Title popular={popular ? popular : false}>{title}</Title>
         <Description>{description}</Description>
         <CreatedBy> 
           Creado por {user.username}

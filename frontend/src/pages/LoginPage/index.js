@@ -6,6 +6,7 @@ import { useLocation } from 'wouter'
 import { Link } from 'wouter'
 import Loader from '../../components/Loader'
 import Error from '../../components/Error'
+import Headers from '../../components/Header'
 
 import {
   LoginPageContainer,
@@ -49,6 +50,9 @@ const  LoginPage = () => {
 
   return (
     <LoginPageContainer>
+      <Headers
+          title='Iniciar sesión en Bloggy'
+      />
       <LeftContent>
         <Title>
           Iniciar sesión

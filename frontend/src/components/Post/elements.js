@@ -43,13 +43,15 @@ export const ContentContainer = styled.div`
   
   `
 export const Title = styled.div`
-  font-size: 1.3em;
   justify-self: flex-start;
 
-  ${({popular}) => popular &&
+  ${({popular}) => popular ?
     css`
       font-size: 1.1em;
       margin-bottom: .5em;
+    ` :
+    css`
+      font-size: 1.3em;
     `
   }
 `
@@ -59,6 +61,10 @@ export const Content = styled.div`
 `
 export const Description = styled.div`
   font-size: .9em;
+  width: 350px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `
 export const DetailsContainer = styled.div`
   position: absolute;
