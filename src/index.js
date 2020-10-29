@@ -7,8 +7,6 @@ import { errorHandler, notFound } from './middlewares/errorMiddleware'
 
 const app = express()
 
-
-
 import { createRoles } from './libs/setup'
 
 createRoles()

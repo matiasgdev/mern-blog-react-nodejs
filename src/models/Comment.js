@@ -18,8 +18,6 @@ const commentSchema = new Schema({
   versionKey: false
 })
 
-// commentSchema.methods.isOwnerOfPost = function isOwnerOfPost(userId) {
-// }
 
 
 export default model('Comment', commentSchema)

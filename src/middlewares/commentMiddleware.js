@@ -31,8 +31,8 @@ export const isOwnerOfComment = ash(async (req, res, next) => {
     res.status(400)
     throw new Error('Comentario no encontrado')
   }
+  
   // verify is owner of post or owner of comment
-
   const commentOwner = comment.user.toString() === userId.toString()
   const postOwner = post.user.toString() === userId.toString()
 
