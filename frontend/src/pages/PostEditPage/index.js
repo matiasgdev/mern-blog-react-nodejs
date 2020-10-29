@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { updatePost, detail } from '../../actions/postsActions'
+import { updatePost } from '../../actions/postsActions'
 import { POST_UPDATE_CLEAR } from '../../types/postTypes'
 import { useLocation } from 'wouter'
-import useModal from '../../hooks/useModal'
 import { deletePost } from '../../actions/postsActions'
+
+import useModal from '../../hooks/useModal'
+import { useIsAuth } from '../../hooks/useIsAuth'
+import { usePostDetail } from '../../hooks/usePostDetail'
+
 import Modal from '../../components/Modal'
 import Error from '../../components/Error'
 import Loader from '../../components/Loader'
@@ -25,9 +29,17 @@ export default function PostEditPage({params}) {
   const dispatch = useDispatch()
   const [, pushLocation] = useLocation()
   
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userInfo } = useIsAuth()
+  const {
+    error: errorDetail,
+    loading: loadingDetail,
+    post
+  } = usePostDetail({slug: params.slug})
+
+  const{ openModal, handleOpenModal } = useModal()
+  
   const { error: errorUpdate = '', loading: loadingUpdate, postUpdated } = useSelector(state => state.postUpdate)
-  const { error: errorDetail = '', loading: loadingDetail, post } = useSelector(state => state.postDetail)
+
   const {
     error: errorDelete,
     loading: loadingDelete,
@@ -40,12 +52,6 @@ export default function PostEditPage({params}) {
     content: ''
   })
 
-  const{ openModal, handleOpenModal } = useModal()
-  
-  // fetching data
-  useEffect(function() {
-    dispatch(detail(params.slug)) 
-  }, [detail, params, dispatch])
 
   // fill form
   useEffect(function() {
@@ -64,10 +70,6 @@ export default function PostEditPage({params}) {
 
 
   useEffect(function() {
-    // redirect if not logged
-    if (!userInfo) {
-      pushLocation('/iniciar-sesion')
-    }
     // redirect when success the submit or do not have permisson
     if (postUpdated) {
       pushLocation(`/publicacion/${postUpdated.slug}`)

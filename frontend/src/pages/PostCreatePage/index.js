@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { createPost } from '../../actions/postsActions'
 import { useLocation } from 'wouter'
+import { useIsAuth } from '../../hooks/useIsAuth'
 import Error from '../../components/Error'
 
 import {
@@ -17,24 +18,21 @@ import {
 
 export default function PostCreatePage() {
   const formRef = useRef()
-
+  
   const dispatch = useDispatch()
   const [, pushLocation] = useLocation()
   
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userInfo } = useIsAuth()
+  
   const { error: errorCreate = '', loading: loadingCreate, postInfo} = useSelector(state => state.postCreate)
 
   useEffect(function() {
-    // redirect if not logged
-    if (!userInfo) {
-      pushLocation('/iniciar-sesion')
-    }
     // redirect when success the submit
     if (postInfo) {
       pushLocation(`/publicacion/${postInfo.slug}`)
     }
 
-  }, [userInfo, pushLocation, postInfo])
+  }, [pushLocation, postInfo])
 
   const handleSubmit = e => {
     e.preventDefault()

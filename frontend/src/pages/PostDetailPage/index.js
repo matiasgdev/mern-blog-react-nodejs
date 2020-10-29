@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { detail, clearDetails, updateLikes, createComment } from '../../actions/postsActions'
+import { updateLikes, createComment } from '../../actions/postsActions'
 import Loader from '../../components/Loader'
 import Error from '../../components/Error'
 import MiniLoader from '../../components/MiniLoader'
@@ -42,35 +42,33 @@ import {
 
 } from './elements'
 import DeleteComment from '../../components/DeleteComment'
+import { usePostDetail } from '../../hooks/usePostDetail'
 
 function PostDetailPage({params}) {
   const dispatch = useDispatch()
-  const slug = params.slug
+  const { userInfo } = useSelector(state => state.userLogin)
+  const { post, loading, error } = usePostDetail({slug: params.slug })
+
+  const isOwnerOfPost = post && userInfo && post.user._id === userInfo.user._id
 
   const inputRef = useRef(null)
   const [showComment, setShowComment] = useState(false)
+  const [showIconLike, setShowIconLike] = useState(false)
   const [postComment, setPostComment] = useState('')
   
-  const { post, loading, error } = useSelector(state => state.postDetail)
-  const { userInfo } = useSelector(state => state.userLogin)
-  
-  const { likes: likesCount, loading: loadingLike, error: errorLike } = useSelector(state => state.postUpdateLikes)
+  const { loading: loadingLike } = useSelector(state => state.postUpdateLikes)
 
-
-  const seeComments = () => {
+  const seeComments = useCallback(() => {
     setShowComment(prevShowComment => !prevShowComment)
-  }
-  
-  const [showIconLike, setShowIconLike] = useState(false)
+  }, [])
   
   // update like
-  const handleUpdateLikes = () => {
+  const handleUpdateLikes = useCallback(() => {
     if (!userInfo) return
     // handle submit likes
-    dispatch(updateLikes({id: post._id, slug }))
+    dispatch(updateLikes({id: post._id, slug: params.slug }))
     setShowIconLike(iconState => !iconState)
-  }
-
+  }, [showIconLike, setShowIconLike, userInfo, post, updateLikes, dispatch])
 
   // focus input when open comments info
   useEffect(function() {
@@ -80,19 +78,11 @@ function PostDetailPage({params}) {
     }
   }, [showComment, inputRef])
 
-
-  // refresh state 
-  useEffect(function() {
-    dispatch(detail(slug))
-    return () => dispatch(clearDetails())
-
-  }, [dispatch, detail, slug, clearDetails])
-
   // verify like-icon state
   useEffect(function() {
     let isLiked
     if (post && userInfo) {
-      isLiked = post.likes.find(like => like.user === userInfo.user._id)
+      isLiked = post.likes.some(like => like.user === userInfo.user._id)
     }
     if (isLiked) {
       setShowIconLike(true)
@@ -102,7 +92,7 @@ function PostDetailPage({params}) {
   return (
     <DetailPageContainer>
       {/* edit post  */}
-      {post && userInfo && post.user._id === userInfo.user._id &&
+      {isOwnerOfPost &&
         <EditPostWrapper>
           <EditPostButton to={`/editar/publicacion/${post.slug}`}>
             <EditPostText>
@@ -159,7 +149,7 @@ function PostDetailPage({params}) {
                   <CreateCommentContainer>
                     <FormComment onSubmit={(e) => {
                       e.preventDefault()
-                      dispatch(createComment({slug, id: post._id, comment: postComment}))
+                      dispatch(createComment({slug: params.slug, id: post._id, comment: postComment}))
                       setPostComment('')
                     }}>
                       <InputComment 
@@ -199,13 +189,12 @@ function PostDetailPage({params}) {
                             userInfo.user._id === comment.user._id ||
                             userInfo.user._id === post.user._id
                           ) &&
-                            <DeleteComment postId={comment.post} slug={slug} commentId={comment._id}/>
+                            <DeleteComment postId={comment.post} slug={params.slug} commentId={comment._id}/>
                         }
                       </UserComment>
                     ))}
                   </UserCommentsContainer>
-                )
-                }
+                )}
               </CommentContainer>
             </MainContent>
           </PostContainer>

@@ -1,13 +1,10 @@
-
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { login, clear } from '../../actions/userActions'
-import { useLocation } from 'wouter'
+import React, { useState } from 'react'
 import { Link } from 'wouter'
-import Loader from '../../components/Loader'
-import Error from '../../components/Error'
-import Headers from '../../components/Header'
+import { useLoginUser } from '../../hooks/useLoginUser'
 
+import Error from '../../components/Error'
+import MiniLoader from '../../components/MiniLoader'
+import Headers from '../../components/Header'
 import {
   LoginPageContainer,
   LeftContent,
@@ -25,27 +22,15 @@ const  LoginPage = () => {
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
 
-  const dispatch = useDispatch()
-  const userLogin = useSelector((state) => state.userLogin)
-  const { loading: loadingUser, error: errorUser, userInfo } = userLogin
-
-  const [_, pushLocation] = useLocation()
-
-  useEffect(function() {
-    if (userInfo) {
-      pushLocation('/')
-    }
-    return () => {
-      if (errorUser) {
-        dispatch(clear())
-      }
-    }
-  }, [userInfo, pushLocation, errorUser, dispatch])
-  
+  const {
+    loading,
+    error,
+    requestLogin
+  } = useLoginUser()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    dispatch(login(email, password))
+    requestLogin({email, password})
   }
 
   return (
@@ -58,7 +43,7 @@ const  LoginPage = () => {
           Iniciar sesión
         </Title>
         <FormContainer>
-          {errorUser && <Error message={errorUser} />}
+          {error && <Error message={error} />}
           <Form
             onSubmit={handleSubmit}
             autoComplete="off"
@@ -83,12 +68,12 @@ const  LoginPage = () => {
               />
             </FormGroup>
             <FormGroup>
-              {!loadingUser ? (
+              {!loading ? (
                 <Button>
                   Entrar
                 </Button>
               ) : (
-                <Loader/>
+                <MiniLoader />
               )}
             </FormGroup>
             <FormGroup>

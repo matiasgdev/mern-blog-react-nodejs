@@ -24,10 +24,12 @@ import {
 
 
 export default function CommunityPage({ params }) {
+  const dispatch = useDispatch()
+  
   const pageInfo = params.page ? Number(params.page) : 1
   const [_, pushLocation]  = useLocation()
 
-  const dispatch = useDispatch()
+
   const { error, loading, data = {} } = useSelector(state => state.posts)
 
   const {
@@ -78,17 +80,17 @@ export default function CommunityPage({ params }) {
                   <Loader /> 
                 ) : 
                 error ? (
-                  error
+                  <Error message={error} />
                 ) : (
                   <>
-                  {posts && posts.length === 0 ? ('No hay posts aun') : (
-                    <> 
-                      {posts.map(post => (
-                        <Post key={post._id} {...post} />
-                      ))}
-                      <Pagination pages={pages} page={page}/>
-                    </>
-                  )}
+                    {posts && posts.length === 0 ? ('No hay posts aun') : (
+                      <> 
+                        {posts.map(post => (
+                          <Post key={post._id} {...post} />
+                        ))}
+                        <Pagination pages={pages} page={page}/>
+                      </> 
+                    )}
                   </>
                 )}
                 </ListPostContainer>

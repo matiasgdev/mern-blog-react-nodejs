@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import Loader from '../../components/Loader'
-import Error from '../../components/Error'
-import { signin, clear } from '../../actions/userActions'
+import { signin } from '../../actions/userActions'
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation } from 'wouter'
+import { useLocation, Link } from 'wouter'
+
 import Headers from '../../components/Header'
+import MiniLoader from '../../components/MiniLoader'
+import Error from '../../components/Error'
 
 import {
   LoginPageContainer,
@@ -23,6 +24,7 @@ export default function FormRegister() {
   const dispatch = useDispatch()
 
   const { userInfo } = useSelector(state => state.userLogin)
+  
   const registerInfo = useSelector(state => state.userRegister)
   const { error: userError, loading: userLoading, success } = registerInfo
 
@@ -68,7 +70,7 @@ export default function FormRegister() {
     if (userError) {
       setMessage(userError)
     }
-  }, [success, pushLocation, userError, userLoading, userInfo, dispatch])
+  }, [success, pushLocation, userError, userInfo])
 
   return (
     <LoginPageContainer>
@@ -133,11 +135,18 @@ export default function FormRegister() {
                   Enviar
                 </Button>
               ) : (
-                <Loader/>
+                <MiniLoader/>
               )}
+            </FormGroup>
+          <FormGroup>
+              Si ya estas registrado {' '}
+              <Link to='/iniciar-sesion'>
+                iniciar sesion aquí
+              </Link>
             </FormGroup>
           </Form>
         </FormContainer>
+
       </LeftContent>
       <RightContent>
         

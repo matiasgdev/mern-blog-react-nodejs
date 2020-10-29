@@ -12,7 +12,6 @@ import {
   POST_DETAIL_REQUEST,
   POST_DETAIL_SUCCESS,
   POST_DETAIL_ERROR,  
-  POST_DETAIL_CLEAR,
   POST_UPDATE_LIKES_ERROR,
   POST_UPDATE_LIKES_SUCCESS,
   POST_UPDATE_LIKES_REQUEST,
@@ -120,9 +119,6 @@ export const detail = (slug) => async (dispatch) => {
   }
 }
 
-export const clearDetails = () => (dispatch) => {
-  dispatch({type: POST_DETAIL_CLEAR })
-}
 
 export const updateLikes = ({id, slug}) => async (dispatch, getState) => {
 

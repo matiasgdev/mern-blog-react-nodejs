@@ -13,7 +13,6 @@ export const LeftContent = styled.div`
 `
 export const RightContent = styled.div`
   flex-basis: 50%;
-
 `
 
 
