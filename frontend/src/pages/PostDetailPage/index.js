@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { usePostDetail } from '../../hooks/usePostDetail'
+
 import { updateLikes, createComment } from '../../actions/postsActions'
 import Loader from '../../components/Loader'
 import Error from '../../components/Error'
@@ -42,7 +44,6 @@ import {
 
 } from './elements'
 import DeleteComment from '../../components/DeleteComment'
-import { usePostDetail } from '../../hooks/usePostDetail'
 
 function PostDetailPage({params}) {
   const dispatch = useDispatch()
@@ -50,6 +51,8 @@ function PostDetailPage({params}) {
   const { post, loading, error } = usePostDetail({slug: params.slug })
 
   const isOwnerOfPost = post && userInfo && post.user._id === userInfo.user._id
+  
+  let isLiked
 
   const inputRef = useRef(null)
   const [showComment, setShowComment] = useState(false)
@@ -80,7 +83,6 @@ function PostDetailPage({params}) {
 
   // verify like-icon state
   useEffect(function() {
-    let isLiked
     if (post && userInfo) {
       isLiked = post.likes.some(like => like.user === userInfo.user._id)
     }

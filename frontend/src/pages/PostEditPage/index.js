@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updatePost } from '../../actions/postsActions'
 import { POST_UPDATE_CLEAR } from '../../types/postTypes'
@@ -28,6 +28,7 @@ import {
 export default function PostEditPage({params}) {
   const dispatch = useDispatch()
   const [, pushLocation] = useLocation()
+  const{ openModal, handleOpenModal } = useModal()
   
   const { userInfo } = useIsAuth()
   const {
@@ -36,9 +37,12 @@ export default function PostEditPage({params}) {
     post
   } = usePostDetail({slug: params.slug})
 
-  const{ openModal, handleOpenModal } = useModal()
-  
-  const { error: errorUpdate = '', loading: loadingUpdate, postUpdated } = useSelector(state => state.postUpdate)
+  const { 
+    error: errorUpdate = '', 
+    loading: loadingUpdate,
+    postUpdated 
+  } = useSelector(state => state.postUpdate)
+
 
   const {
     error: errorDelete,
@@ -88,14 +92,14 @@ export default function PostEditPage({params}) {
     })
   }
 
-  const handleSubmit = e => {
+  const handleUpdatePost = e => {
     e.preventDefault()
     dispatch(updatePost({newData: formData, id: post._id}))
   }
 
-  const handleDeletePost = () => {
+  const handleDeletePost = useCallback(() => {
     dispatch(deletePost({postId: post._id}))
-  }
+  }, [post, dispatch, deletePost])
 
   if (!userInfo) return null
 
@@ -124,7 +128,7 @@ export default function PostEditPage({params}) {
             <FormContainer>
               {errorUpdate && <Error message={errorUpdate} />}
               <Form
-                onSubmit={handleSubmit}
+                onSubmit={handleUpdatePost}
               >
                 <FormGroup>
                   <Label htmlFor="title">Título</Label>

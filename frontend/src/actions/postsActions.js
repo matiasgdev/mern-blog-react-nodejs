@@ -119,7 +119,6 @@ export const detail = (slug) => async (dispatch) => {
   }
 }
 
-
 export const updateLikes = ({id, slug}) => async (dispatch, getState) => {
 
   try {
@@ -135,7 +134,7 @@ export const updateLikes = ({id, slug}) => async (dispatch, getState) => {
 
     setTimeout(() => {
       dispatch({type: POST_UPDATE_LIKES_SUCCESS, payload: data.num })
-    }, 3000)
+    }, 500)
 
     const { data: dataPost } = await axios.get(`${BASE_URL}/${slug}`)
     dispatch({type: POST_DETAIL_SUCCESS, payload: dataPost })

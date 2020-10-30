@@ -11,8 +11,6 @@ export const useIsAuth = () => {
   useEffect(() => {
     if (!userInfo) {
       navigate('/iniciar-sesion')
-    } else {
-      navigate('/')
     }
   }, [userInfo, navigate])
 
