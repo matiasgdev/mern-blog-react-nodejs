@@ -74,6 +74,7 @@ export const list = ash(async (req, res) => {
     ])
     .limit(pageLimit)
     .skip(pageLimit * (page - 1))
+    .sort({ createdAt: -1 })
 
   return res.json({ 
     count,
@@ -93,10 +94,6 @@ export const listPopular = ash(async (req, res) => {
     res.json(popularPosts)
 
 })
-
-// export const detail = async (req, res) => {
-//   res.json({ post: res.post })
-// }
 
 // detail posd by slug
 export const detailBySlug = ash(async (req, res) => {

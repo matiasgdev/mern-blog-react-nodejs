@@ -1,6 +1,17 @@
 # Bloggy. React & Nodejs
 
-It's a fullstack app that combine javascript technologies to build a blog, **completely from scratch**. 
+It's a fullstack app that combine javascript technologies to build a blog, **completely from scratch**.
+
+The content is in spanish
+
+Technologies: 
+- Express
+- Mondodb
+- React
+- Redux
+- JSONWebToken
+- Styled components
+- Multer
 
 ## Packages
 
@@ -28,6 +39,13 @@ Config .env file with the following
   SERVER_PORT = youravaibleport
   DB = 'mongodb://localhost/blog-react-node' for example
 ```
+### Images
+
+![home page](/public/images/home.png)
+![community page](/public/images/community.png)
+![post detail](/public/images/post-detail.png)
+![form](/public/images/form.png)
+
 
 ## Future changes
 - [ ] Add validations, maybe Joi or Yup
@@ -36,4 +54,4 @@ Config .env file with the following
 - [ ] Deploy App
 
 ## Contributing
-Pull requests are welcome
+Pull requests are welcome :)
