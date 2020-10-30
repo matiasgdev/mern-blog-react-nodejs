@@ -21,14 +21,11 @@ import {
   CreatePostItem
 } from './elements'
 
-
-
 export default function CommunityPage({ params }) {
   const dispatch = useDispatch()
   
   const pageInfo = params.page ? Number(params.page) : 1
   const [_, pushLocation]  = useLocation()
-
 
   const { error, loading, data = {} } = useSelector(state => state.posts)
 

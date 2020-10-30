@@ -33,7 +33,8 @@ const reducer = combineReducers({
   postDelete: deletePostReducer
 })
 
-const userInfoFromCache = localStorage.getItem('userInfo')
+const userInfoFromCache = 
+  localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo')) 
   : null
 

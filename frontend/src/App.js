@@ -6,7 +6,6 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import PostCreatePage from './pages/PostCreatePage'
 import PostDetailPage from './pages/PostDetailPage'
-import ErrorPage from './pages/ErrorPage'
 import { Route, Switch } from 'wouter'
 import PostEditPage from './pages/PostEditPage'
 
@@ -24,6 +23,7 @@ function App() {
       <Route path="/nueva/publicacion" component={PostCreatePage} />
       <Route path="/editar/publicacion/:slug" component={PostEditPage} />
       <Route path="/publicacion/:slug" component={PostDetailPage} />
+
       <Route path="/:rest*">
         {({rest}) => {
           return `404 - /${rest} Not Found`
