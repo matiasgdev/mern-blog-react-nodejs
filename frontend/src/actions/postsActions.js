@@ -50,7 +50,7 @@ export const getPosts = ({ page }) => async (dispatch) => {
 
     setTimeout(() => {
       dispatch({ type: POSTS_GET_SUCCESS, payload: data })
-    }, 2000)
+    }, 500)
 
   } catch(e) {  
     dispatch({
@@ -70,7 +70,7 @@ export const getPopularPosts = () => async dispatch => {
     const { data } = await axios.get(`${BASE_URL}/popular`)
     setTimeout(() => {
       dispatch({type: POSTS_GET_POPULAR_SUCCESS, payload: data})
-    }, 2000)
+    }, 500)
 
   }catch(e) {
     dispatch({

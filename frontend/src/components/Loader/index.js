@@ -2,7 +2,7 @@ import React from 'react'
 import './index.css'
 
 export default function Loader() {
-  return <div class="lds-default">
+  return <div className="lds-default">
     <div></div>
     <div></div>
     <div></div>

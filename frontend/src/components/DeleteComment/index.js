@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
-import Modal from '../Modal'
 import { useDispatch, useSelector } from 'react-redux'
+import useModal from '../../hooks/useModal'
 import { deleteComment } from '../../actions/postsActions'
 import { POST_DELETE_COMMENT_CLEAR } from '../../types/postTypes'
-
-import useModal from '../../hooks/useModal'
-
+import Modal from '../Modal'
 import { DeleteIcon, DeleteCommentContainer } from './elements'
 
 
@@ -21,7 +19,7 @@ const DeleteComment = ({commentId, postId, slug}) => {
     return () => {
       dispatch({type: POST_DELETE_COMMENT_CLEAR })
     }
-  }, [])  
+  }, [])
 
   const { openModal, handleOpenModal } = useModal()
 

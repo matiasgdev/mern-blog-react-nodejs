@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { createPortal } from 'react-dom'
 
 import {
@@ -44,4 +45,14 @@ const Modal = ({
     document.body
   )
 }
+
+Modal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleOpenModal: PropTypes.func.isRequired,
+  action: PropTypes.func.isRequired,
+  mesagge: PropTypes.string,
+  loading: PropTypes.bool,
+  error: PropTypes.string
+}
+
 export default Modal

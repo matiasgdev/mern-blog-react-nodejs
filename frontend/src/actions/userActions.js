@@ -5,12 +5,9 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_FAIL,
   USER_LOGOUT,
-  USER_LOGIN_RESET,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
-  USER_REGISTER_FAIL, 
-  USER_REGISTER_RESET 
-
+  USER_REGISTER_FAIL
 } from '../types/userTypes'
 
 const API_LOGIN = 'http://localhost:4000/api/auth/login'

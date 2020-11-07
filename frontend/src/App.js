@@ -1,4 +1,5 @@
 import React from 'react'
+import { Route, Switch } from 'wouter'
 import Navigator from './components/Navigator'
 import HomePage from './pages/HomePage'
 import CommunityPage from './pages/CommunityPage'
@@ -6,7 +7,6 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import PostCreatePage from './pages/PostCreatePage'
 import PostDetailPage from './pages/PostDetailPage'
-import { Route, Switch } from 'wouter'
 import PostEditPage from './pages/PostEditPage'
 
 
