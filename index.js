@@ -28,7 +28,7 @@ app.use('/api/auth', auth)
 app.use('/api/post', post)
 
 
-// if (process.env.NODE_ENV === 'p  roduction') {
+// if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.resolve(__dirname, 'frontend', 'build')))
 
   app.use('*', (req, res) => {
