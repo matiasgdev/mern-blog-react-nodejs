@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+require("@babel/polyfill");
+
 var _express = _interopRequireDefault(require("express"));
 
 var _cors = _interopRequireDefault(require("cors"));
@@ -41,7 +43,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/auth', _auth["default"]);
-app.use('/api/post', _post["default"]); // if (process.env.NODE_ENV === 'p  roduction') {
+app.use('/api/post', _post["default"]); // if (process.env.NODE_ENV === 'production') {
 
 app.use(_express["default"]["static"](_path["default"].resolve(__dirname, 'frontend', 'build')));
 app.use('*', function (req, res) {
