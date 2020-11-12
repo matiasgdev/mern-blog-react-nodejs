@@ -1,7 +1,6 @@
 import '@babel/polyfill'
 import express from 'express'
 import cors from 'cors'
-import morgan from 'morgan'
 import auth from './src/routes/auth'
 import post from './src/routes/post'
 import path from 'path'
@@ -22,6 +21,7 @@ app.use('/files', express.static('public'))
 app.use(express.json())
 
 if (process.env.NODE_ENV === 'development') {
+  import morgan from 'morgan'
   app.use(morgan('dev'))
 }
 
