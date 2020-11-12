@@ -22,7 +22,7 @@ export const Button = styled.button`
   }
 
   @media screen and (max-width: 767px){
-    padding: 12px 72px;
+    padding: 12px 44px;
     color: white;
   }
 `

@@ -1,6 +1,6 @@
 require('dotenv').config()
 import mongoose from 'mongoose'
-import app from './index'
+import app from '../index'
 
 mongoose.connect(process.env.DB, {
   useNewUrlParser: true,

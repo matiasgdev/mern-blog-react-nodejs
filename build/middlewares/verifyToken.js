@@ -11,7 +11,7 @@ var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
 var _User = _interopRequireDefault(require("../models/User"));
 
-var _Role = _interopRequireDefault(require("../models/Role"));
+var _expressAsyncHandler = _interopRequireDefault(require("express-async-handler"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -19,70 +19,58 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var verifyToken = /*#__PURE__*/function () {
+var verifyToken = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res, next) {
     var token, decoded, user;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            token = req.headers["x-access-token"];
-
-            if (token) {
-              _context.next = 4;
+            if (!(req.headers['authorization'] && req.headers['authorization'].startsWith('Bearer '))) {
+              _context.next = 13;
               break;
             }
 
-            return _context.abrupt("return", res.status(403).json({
-              message: 'Se requiere un token. Intente iniciando sesión'
-            }));
-
-          case 4:
+            token = req.headers["authorization"].split(' ').pop();
             decoded = _jsonwebtoken["default"].verify(token, _config["default"].SECRET_KEY);
-            _context.next = 7;
+            _context.next = 5;
             return _User["default"].findOne({
               _id: decoded.id
             }, {
               password: 0
             });
 
-          case 7:
+          case 5:
             user = _context.sent;
 
             if (user) {
-              _context.next = 10;
+              _context.next = 9;
               break;
             }
 
-            return _context.abrupt("return", res.status(400).json({
-              message: 'Usuario no encontrado. Intente iniciando sesión'
-            }));
+            res.status(401);
+            throw new Error('Usuario no encontrado. Intente iniciando sesión');
 
-          case 10:
+          case 9:
             res.user = user;
             next();
-            _context.next = 17;
+            _context.next = 15;
             break;
 
-          case 14:
-            _context.prev = 14;
-            _context.t0 = _context["catch"](0);
-            return _context.abrupt("return", res.status(401).json({
-              message: 'La sesión expiro o el token no existe.'
-            }));
+          case 13:
+            res.status(401);
+            throw new Error('Debes proveer un token');
 
-          case 17:
+          case 15:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 14]]);
+    }, _callee);
   }));
 
-  return function verifyToken(_x, _x2, _x3) {
+  return function (_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
-}();
-
+}());
 exports.verifyToken = verifyToken;

@@ -1,13 +1,15 @@
 import styled, { css } from 'styled-components'
 import { Link } from 'wouter'
-import { Button } from '../../style'
-
 
 export const Community = styled.div`
   min-height: 100vh;
   width: 100%;
   padding: 3em 3.5em;
-  background: #f2f2f2;  
+  background: #f2f2f2;
+
+  @media screen and (max-width: 1200px) {
+    padding: 3em 2em;
+  }
 `
 
 export const CommunityContainer = styled.div`
@@ -22,6 +24,17 @@ export const PostsWrapper = styled.div`
   grid-template-columns: 65% 1fr;
   gap: 3em;
 
+  @media screen and (max-width: 1200px) {
+    gap: 2em;
+    grid-template-columns: 50% 1fr;
+  }
+
+  @media screen and (max-width: 1200px) {
+    gap: 2em;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+  }
+
 `
 
 export const LeftContent = styled.div`
@@ -30,6 +43,10 @@ export const LeftContent = styled.div`
 
 export const RightContent = styled.div`
   width: 100%;
+
+  @media screen and (max-width: 1200px) {
+    width: 60%;
+  }
 `
 
 export const ListPostContainer = styled.div`

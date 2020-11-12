@@ -15,7 +15,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var createRoles = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var count, values;
+    var count;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -39,28 +39,24 @@ var createRoles = /*#__PURE__*/function () {
             return Promise.all([new _Role["default"]({
               name: 'user'
             }).save(), new _Role["default"]({
-              name: 'moderator'
-            }).save(), new _Role["default"]({
               name: 'admin'
             }).save()]);
 
           case 8:
-            values = _context.sent;
-            console.log(values);
-            _context.next = 15;
+            _context.next = 13;
             break;
 
-          case 12:
-            _context.prev = 12;
+          case 10:
+            _context.prev = 10;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
 
-          case 15:
+          case 13:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 12]]);
+    }, _callee, null, [[0, 10]]);
   }));
 
   return function createRoles() {

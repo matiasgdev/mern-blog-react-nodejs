@@ -31,12 +31,7 @@ var schema = new _mongoose.Schema({
   },
   roles: [{
     type: _mongoose.Schema.Types.ObjectId,
-    ref: "Role" // referencia
-
-  }],
-  posts: [{
-    type: _mongoose.Schema.Types.ObjectId,
-    ref: "Post"
+    ref: "Role"
   }]
 }, {
   timestamps: true,
@@ -60,7 +55,9 @@ schema.pre('save', /*#__PURE__*/function () {
 
           case 6:
             this.password = _context.sent;
-            return _context.abrupt("return", next());
+            next();
+            _context.next = 13;
+            break;
 
           case 10:
             _context.prev = 10;

@@ -1,4 +1,4 @@
-# Bloggy. React & Nodejs
+f# Bloggy. React & Nodejs
 
 It's a fullstack app that combine javascript technologies to build a blog, **completely from scratch**.
 
@@ -36,6 +36,7 @@ mkdir public/images
 
 Config .env file with the following
 ```
+  NODE_ENV = development
   SERVER_PORT = youravaibleport
   DB = 'mongodb://localhost/blog-react-node' for example
 ```

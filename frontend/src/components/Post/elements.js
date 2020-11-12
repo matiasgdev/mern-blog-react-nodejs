@@ -9,7 +9,6 @@ export const PostItemContainer = styled(Link)`
   display: flex;
   margin-bottom: .5em;
   padding: .5em;
-  position: relative;
 
   color: none;
   text-decoration: none;
@@ -35,12 +34,11 @@ export const ImageContainer = styled.img`
 
 `
 export const ContentContainer = styled.div`
-  flex-basis: 100%;
-  display: flex;
+  width: 100%;
   flex-direction: column;
   position: relative;
   color: #3f3f3f;
-  
+
   `
 export const Title = styled.div`
   justify-self: flex-start;
@@ -69,8 +67,8 @@ export const Description = styled.div`
 export const DetailsContainer = styled.div`
   position: absolute;
   width: max-content;
-  top: 0;
-  right: 0;
+  top: .5em;
+  right: .5em;
   display: flex;
   justify-content: space-between;
 

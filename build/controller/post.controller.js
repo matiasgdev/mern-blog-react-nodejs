@@ -3,9 +3,17 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.remove = exports.update = exports.detail = exports.list = exports.create = void 0;
+exports.remove = exports.deleteComment = exports.addCommentToPost = exports.updateLikesOfPost = exports.update = exports.detailBySlug = exports.listPopular = exports.list = exports.create = void 0;
 
 var _Post = _interopRequireDefault(require("../models/Post"));
+
+var _User = _interopRequireDefault(require("../models/User"));
+
+var _Comment = _interopRequireDefault(require("../models/Comment"));
+
+var _expressAsyncHandler = _interopRequireDefault(require("express-async-handler"));
+
+var _dotenv = _interopRequireDefault(require("dotenv"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -13,119 +21,172 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var create = /*#__PURE__*/function () {
+_dotenv["default"].config(); // create new post
+
+
+var create = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-    var _req$body, title, description, content, category, post, newPost;
+    var _req$body, title, description, content, category, isTitleUnique, serverPath, filePath, post, userData, newPost;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            if (req.body) {
-              _context.next = 2;
+            if (!(req.body.title === '')) {
+              _context.next = 3;
               break;
             }
 
-            return _context.abrupt("return", res.status(400).json({
-              message: 'Ingrese los datos para crear el post'
-            }));
+            res.status(400);
+            throw new Error("Se requiere un título");
 
-          case 2:
+          case 3:
+            if (!(req.body.description === '')) {
+              _context.next = 6;
+              break;
+            }
+
+            res.status(400);
+            throw new Error("Se requiere una descripción");
+
+          case 6:
+            if (!(req.body.content === '')) {
+              _context.next = 9;
+              break;
+            }
+
+            res.status(400);
+            throw new Error("Se requiere un contenido");
+
+          case 9:
+            if (req.file) {
+              _context.next = 12;
+              break;
+            }
+
+            res.status(400);
+            throw new Error("Se requiere al menos una imagen");
+
+          case 12:
             _req$body = req.body, title = _req$body.title, description = _req$body.description, content = _req$body.content, category = _req$body.category;
-            _context.prev = 3;
+            _context.next = 15;
+            return _Post["default"].findOne({
+              title: title
+            });
+
+          case 15:
+            isTitleUnique = _context.sent;
+
+            if (!isTitleUnique) {
+              _context.next = 19;
+              break;
+            }
+
+            res.status(400);
+            throw new Error('Ya existe un post con ese titulo');
+
+          case 19:
+            serverPath = "http://localhost:".concat(process.env.SERVER_PORT, "/");
+            filePath = req.file.path.replace('public', 'files');
             post = new _Post["default"]({
               title: title,
               description: description,
               content: content,
-              category: category
+              category: category,
+              imagePath: serverPath + filePath
             });
-            _context.next = 7;
+            _context.next = 24;
+            return _User["default"].findOne({
+              _id: res.user._id
+            });
+
+          case 24:
+            userData = _context.sent;
+            post.user = userData._id;
+            _context.next = 28;
             return post.save();
 
-          case 7:
+          case 28:
             newPost = _context.sent;
-            return _context.abrupt("return", res.status(201).json({
-              message: 'Post creado correctamente',
-              post: {
-                data: newPost
-              }
-            }));
+            return _context.abrupt("return", res.status(201).json(newPost));
 
-          case 11:
-            _context.prev = 11;
-            _context.t0 = _context["catch"](3);
-            return _context.abrupt("return", res.status(500).json({
-              message: 'Hubo un error al crear el post',
-              error: _context.t0.message
-            }));
-
-          case 14:
+          case 30:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 11]]);
+    }, _callee);
   }));
 
-  return function create(_x, _x2) {
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
-}();
+}()); // list posts
 
 exports.create = create;
-
-var list = /*#__PURE__*/function () {
+var list = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, res) {
-    var posts;
+    var pageLimit, page, count, posts;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.prev = 0;
-            _context2.next = 3;
-            return _Post["default"].find();
+            pageLimit = 5;
+            page = Number(req.query.page) || 1;
+            _context2.next = 4;
+            return _Post["default"].countDocuments();
 
-          case 3:
-            posts = _context2.sent;
-            return _context2.abrupt("return", res.json({
-              count: posts.length,
-              data: posts
-            }));
-
-          case 7:
-            _context2.prev = 7;
-            _context2.t0 = _context2["catch"](0);
-            res.status(500).json({
-              message: 'Ocurrio un error, intente luego',
-              error: _context2.t0.message
+          case 4:
+            count = _context2.sent;
+            _context2.next = 7;
+            return _Post["default"].find().populate([{
+              path: 'user',
+              select: 'username'
+            }, {
+              path: 'comments'
+            }]).limit(pageLimit).skip(pageLimit * (page - 1)).sort({
+              createdAt: -1
             });
 
-          case 10:
+          case 7:
+            posts = _context2.sent;
+            return _context2.abrupt("return", res.json({
+              count: count,
+              posts: posts,
+              page: page,
+              pages: Math.ceil(count / pageLimit)
+            }));
+
+          case 9:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 7]]);
+    }, _callee2);
   }));
 
-  return function list(_x3, _x4) {
+  return function (_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
-}();
-
+}());
 exports.list = list;
-
-var detail = /*#__PURE__*/function () {
+var listPopular = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(req, res) {
+    var popularPosts;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            res.json({
-              data: res.post
-            });
+            _context3.next = 2;
+            return _Post["default"].find({}).sort({
+              likes: -1
+            }).limit(3).populate('user', 'username');
 
-          case 1:
+          case 2:
+            popularPosts = _context3.sent;
+            res.json(popularPosts);
+
+          case 4:
           case "end":
             return _context3.stop();
         }
@@ -133,107 +194,267 @@ var detail = /*#__PURE__*/function () {
     }, _callee3);
   }));
 
-  return function detail(_x5, _x6) {
+  return function (_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
-}();
+}()); // detail posd by slug
 
-exports.detail = detail;
-
-var update = /*#__PURE__*/function () {
+exports.listPopular = listPopular;
+var detailBySlug = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(req, res) {
-    var updatedPost;
+    var detailOfPost;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            if (req.body) {
-              _context4.next = 2;
+            _context4.next = 2;
+            return _Post["default"].findOne({
+              slug: req.params.slug
+            }).populate('user', 'username').populate({
+              path: 'comments',
+              populate: {
+                path: 'user',
+                select: 'username'
+              }
+            });
+
+          case 2:
+            detailOfPost = _context4.sent;
+
+            if (detailOfPost) {
+              _context4.next = 6;
               break;
             }
 
-            return _context4.abrupt("return", res.status(400).json({
-              message: 'Ingrese algun dato para actualizar el post'
-            }));
-
-          case 2:
-            Object.keys(req.body).map(function (key) {
-              if (req.body[key] != '') {
-                res.post[key] = req.body[key];
-              }
-            });
-            _context4.prev = 3;
-            _context4.next = 6;
-            return res.post.save();
+            res.status(400);
+            throw new Error("No existe el post ".concat(req.params.slug));
 
           case 6:
-            updatedPost = _context4.sent;
-            res.json({
-              message: 'Post actualizado correctamente',
-              post: updatedPost
-            });
-            _context4.next = 13;
-            break;
+            res.json(detailOfPost);
 
-          case 10:
-            _context4.prev = 10;
-            _context4.t0 = _context4["catch"](3);
-            res.status(400).json({
-              message: 'Ocurrio un error',
-              error: _context4.t0.message
-            });
-
-          case 13:
+          case 7:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[3, 10]]);
+    }, _callee4);
   }));
 
-  return function update(_x7, _x8) {
+  return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
-}();
+}()); // update post
 
-exports.update = update;
-
-var remove = /*#__PURE__*/function () {
+exports.detailBySlug = detailBySlug;
+var update = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(req, res) {
+    var isSomethingToModify, updatedPost;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _context5.prev = 0;
-            _context5.next = 3;
-            return res.post.remove();
-
-          case 3:
-            res.json({
-              message: 'Post eliminado correctamente'
+            isSomethingToModify = 0;
+            Object.keys(req.body).map(function (key) {
+              if (req.body[key] !== '') {
+                res.post[key] = req.body[key];
+                isSomethingToModify++;
+              }
             });
-            _context5.next = 9;
-            break;
+
+            if (!(isSomethingToModify === 0)) {
+              _context5.next = 4;
+              break;
+            }
+
+            throw new Error("No existen datos para modificar");
+
+          case 4:
+            _context5.next = 6;
+            return res.post.save();
 
           case 6:
-            _context5.prev = 6;
-            _context5.t0 = _context5["catch"](0);
-            res.status(500).json({
-              message: 'Ocurrio un error',
-              error: _context5.t0.message
-            });
+            updatedPost = _context5.sent;
+            res.json(updatedPost);
 
-          case 9:
+          case 8:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 6]]);
+    }, _callee5);
   }));
 
-  return function remove(_x9, _x10) {
+  return function (_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
-}();
+}()); // update likes 
 
+exports.update = update;
+var updateLikesOfPost = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(req, res) {
+    var post, user, isAlreadyLike, updatedPost, numOfLikes, like, _updatedPost, _numOfLikes;
+
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            post = res.post;
+            user = res.user;
+            isAlreadyLike = post.likes.find(function (like) {
+              return like.user.toHexString() === user._id.toHexString();
+            });
+
+            if (!isAlreadyLike) {
+              _context6.next = 12;
+              break;
+            }
+
+            post.likes = post.likes.filter(function (like) {
+              return like.user.toHexString() !== user._id.toHexString();
+            });
+            _context6.next = 7;
+            return post.save();
+
+          case 7:
+            updatedPost = _context6.sent;
+            numOfLikes = updatedPost.likes.length;
+            res.status(201).json({
+              message: 'removed',
+              num: numOfLikes
+            });
+            _context6.next = 19;
+            break;
+
+          case 12:
+            like = {
+              user: user._id
+            };
+            post.likes.push(like);
+            _context6.next = 16;
+            return post.save();
+
+          case 16:
+            _updatedPost = _context6.sent;
+            _numOfLikes = _updatedPost.likes.length;
+            res.status(201).json({
+              message: 'added',
+              num: _numOfLikes
+            });
+
+          case 19:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }));
+
+  return function (_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}()); // add comment
+
+exports.updateLikesOfPost = updateLikesOfPost;
+var addCommentToPost = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(req, res) {
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            res.post.comments.push(res.comment._id);
+            _context7.next = 3;
+            return res.post.save();
+
+          case 3:
+            _context7.next = 5;
+            return _Post["default"].findOne({
+              _id: res.post._id
+            });
+
+          case 5:
+            res.json({
+              message: 'Se envió el comentario correctamente'
+            });
+
+          case 6:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }));
+
+  return function (_x13, _x14) {
+    return _ref7.apply(this, arguments);
+  };
+}()); // delete comment 
+
+exports.addCommentToPost = addCommentToPost;
+var deleteComment = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
+  var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(req, res) {
+    var isDeleted;
+    return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.next = 2;
+            return _Post["default"].findOneAndUpdate({
+              _id: req.params.postId
+            }, {
+              $pull: {
+                comments: req.params.commentId
+              }
+            }, {
+              "new": true
+            });
+
+          case 2:
+            isDeleted = _context8.sent;
+            _context8.next = 5;
+            return _Comment["default"].findOneAndDelete({
+              _id: req.params.commentId
+            });
+
+          case 5:
+            res.json(isDeleted);
+
+          case 6:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8);
+  }));
+
+  return function (_x15, _x16) {
+    return _ref8.apply(this, arguments);
+  };
+}());
+exports.deleteComment = deleteComment;
+var remove = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
+  var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(req, res) {
+    return regeneratorRuntime.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.next = 2;
+            return res.post.remove();
+
+          case 2:
+            res.json({
+              message: "Publicacion ".concat(res.post._id, " eliminada correctamente")
+            });
+
+          case 3:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9);
+  }));
+
+  return function (_x17, _x18) {
+    return _ref9.apply(this, arguments);
+  };
+}());
 exports.remove = remove;

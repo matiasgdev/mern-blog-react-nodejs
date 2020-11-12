@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
-var _index = _interopRequireDefault(require("./index"));
+var _index = _interopRequireDefault(require("../index"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -17,13 +17,11 @@ _mongoose["default"].connect(process.env.DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true
-}) // okey
-.then(function () {
+}).then(function () {
   _index["default"].listen(process.env.SERVER_PORT, function () {
     console.log('server running on port ' + process.env.SERVER_PORT);
   });
-}) // error
-["catch"](function (err) {
+})["catch"](function (err) {
   console.error(err);
 });
 

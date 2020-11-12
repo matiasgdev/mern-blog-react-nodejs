@@ -7,22 +7,41 @@ exports["default"] = void 0;
 
 var _express = require("express");
 
-var _postController = require("../controller/post.controller.js");
-
-var _findPostById = require("../middlewares/findPostById");
-
 var _verifyToken = require("../middlewares/verifyToken");
 
 var _checkIsAdmin = require("../middlewares/checkIsAdmin");
 
-var router = (0, _express.Router)();
-router.get('/', _postController.list);
-router.get('/:id', _findPostById.findPostById, _postController.detail); // crear post
+var _findPostById = require("../middlewares/findPostById");
 
-router.post('/', _verifyToken.verifyToken, _checkIsAdmin.isAdmin, _postController.create); // actualizar post
+var _commentMiddleware = require("../middlewares/commentMiddleware");
 
-router.put('/:id', _verifyToken.verifyToken, _checkIsAdmin.isAdmin, _findPostById.findPostById, _postController.update); // borrar post
+var _postMiddleware = require("../middlewares/postMiddleware");
 
-router["delete"]('/:id', _verifyToken.verifyToken, _checkIsAdmin.isAdmin, _findPostById.findPostById, _postController.remove);
+var _uploadFile = _interopRequireDefault(require("../middlewares/uploadFile"));
+
+var _postController = require("../controller/post.controller.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var router = (0, _express.Router)(); // list posts
+
+router.get('/', _postController.list); // list popular post
+
+router.get('/popular', _postController.listPopular); // router.get('/find/:id', findPostById, detail)
+
+router.get('/:slug', _postController.detailBySlug); // create post
+
+router.post('/', _verifyToken.verifyToken, _uploadFile["default"].single('post_image'), _postController.create); // router.post('/', uploadFile.single('post_image'), create)
+// update post
+
+router.put('/:id', _verifyToken.verifyToken, _findPostById.findPostById, _postMiddleware.isOwner, _postController.update); // update likes post
+
+router.put('/like/:id', _verifyToken.verifyToken, _findPostById.findPostById, _postController.updateLikesOfPost); // add comment
+
+router.put('/comment/:id', _verifyToken.verifyToken, _findPostById.findPostById, _commentMiddleware.createComment, _postController.addCommentToPost); // delete comment
+
+router["delete"]('/comment/:postId/:commentId', _verifyToken.verifyToken, _findPostById.findPostById, _commentMiddleware.isOwnerOfComment, _postController.deleteComment); // delete post
+
+router["delete"]('/:id', _verifyToken.verifyToken, _findPostById.findPostById, _postController.remove);
 var _default = router;
 exports["default"] = _default;
