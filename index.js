@@ -5,7 +5,6 @@ import auth from './src/routes/auth'
 import post from './src/routes/post'
 import path from 'path'
 import dotenv from 'dotenv'
-import morgan from 'morgan'
 import { errorHandler, notFound } from './src/middlewares/errorMiddleware'
 
 const app = express()
@@ -21,9 +20,6 @@ app.use(cors())
 app.use('/files', express.static('public'))
 app.use(express.json())
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'))
-}
 
 app.use('/api/auth', auth)
 app.use('/api/post', post)
