@@ -10,8 +10,8 @@ import {
   USER_REGISTER_FAIL
 } from '../types/userTypes'
 
-const API_LOGIN = '/api/auth/login'
-const API_SIGNIN = '/api/auth/login'
+const API_LOGIN = 'https://blog-mern-stack-matiasgdev.herokuapp.com/api/auth/login'
+const API_SIGNIN = 'https://blog-mern-stack-matiasgdev.herokuapp.com/api/auth/login'
 
 const config = {
   headers: {

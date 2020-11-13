@@ -30,7 +30,7 @@ import {
 } from '../types/postTypes'
 import axios from 'axios'
 
-const BASE_URL = `/api/post`
+const BASE_URL = `https://blog-mern-stack-matiasgdev.herokuapp.com/api/post`
 
 const config = (user = null) => {
   return {
