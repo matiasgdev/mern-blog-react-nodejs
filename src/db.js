@@ -8,8 +8,8 @@ mongoose.connect(process.env.DB, {
   useCreateIndex: true
 })
 .then(() => {
-  app.listen(process.env.SERVER_PORT, () => {
-    console.log('server running on port ' + process.env.SERVER_PORT)
+  app.listen(process.env.PORT, () => {
+    console.log('server running on port ' + process.env.PORT)
   })
 })
 .catch(err => {
