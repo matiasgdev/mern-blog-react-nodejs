@@ -4,7 +4,6 @@ import app from '../index'
 require('dotenv').config()
 const DB_URI = process.env.DB || 'mongodb://localhost:27017/blog-react-node'
 const port = process.env.PORT || 4000
-const host = process.env.HOST || 'localhost'
 
 mongoose.connect(DB_URI, {
   useNewUrlParser: true,
@@ -12,7 +11,7 @@ mongoose.connect(DB_URI, {
   useCreateIndex: true
 })
 .then(() => {
-  app.listen(port, host, () => {
+  app.listen(port, () => {
     console.log('server running on port ' + process.env.PORT)
   })
 })
