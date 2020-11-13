@@ -11,7 +11,7 @@ import {
 } from '../types/userTypes'
 
 const API_LOGIN = 'https://blog-mern-stack-matiasgdev.herokuapp.com/api/auth/login'
-const API_SIGNIN = 'https://blog-mern-stack-matiasgdev.herokuapp.com/api/auth/login'
+const API_SIGNIN = 'https://blog-mern-stack-matiasgdev.herokuapp.com/api/auth/signup'
 
 const config = {
   headers: {
