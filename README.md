@@ -1,6 +1,8 @@
-f# Bloggy. React & Nodejs
+# Bloggy. React & Nodejs
 
 It's a fullstack app that combine javascript technologies to build a blog, **completely from scratch**.
+
+[Play with the App](https://blog-mern-stack-matiasgdev.herokuapp.com/)
 
 The content is in spanish
 
