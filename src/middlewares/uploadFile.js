@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const manageStorage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, imageRoute + 'public/images')
+    cb(null, imageRoute + 'files/images')
   },
   filename: function(req, file, cb) {
     let fileName = nanoid(5) + path.extname(file.originalname)
