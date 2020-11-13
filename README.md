@@ -52,7 +52,7 @@ Config .env file with the following
 - [ ] Add validations, maybe Joi or Yup
 - [ ] Text editor for write pretty posts
 - [ ] Use roles for different purposes
-- [ ] Deploy App
+- [x] Deploy App
 
 ## Contributing
 Pull requests are welcome :)
