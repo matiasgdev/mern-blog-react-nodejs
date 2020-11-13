@@ -87,6 +87,11 @@ var create = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
 
           case 19:
             serverPath = "http://localhost:".concat(process.env.SERVER_PORT, "/");
+
+            if (process.env.NODE_ENV === 'production') {
+              serverPath = "https://blog-mern-stack-matiasgdev.herokuapp.com/";
+            }
+
             filePath = req.file.path.replace('public', 'files');
             post = new _Post["default"]({
               title: title,
@@ -95,22 +100,22 @@ var create = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
               category: category,
               imagePath: serverPath + filePath
             });
-            _context.next = 24;
+            _context.next = 25;
             return _User["default"].findOne({
               _id: res.user._id
             });
 
-          case 24:
+          case 25:
             userData = _context.sent;
             post.user = userData._id;
-            _context.next = 28;
+            _context.next = 29;
             return post.save();
 
-          case 28:
+          case 29:
             newPost = _context.sent;
             return _context.abrupt("return", res.status(201).json(newPost));
 
-          case 30:
+          case 31:
           case "end":
             return _context.stop();
         }

@@ -36,7 +36,11 @@ export const create = ash(async (req, res) => {
     throw new Error('Ya existe un post con ese titulo')
   }
 
-  const serverPath = `http://localhost:${process.env.SERVER_PORT}/`
+  
+  let serverPath = `http://localhost:${process.env.SERVER_PORT}/`
+  if (process.env.NODE_ENV === 'production') {
+    serverPath = `https://blog-mern-stack-matiasgdev.herokuapp.com/`
+  }
   const filePath = req.file.path.replace('public', 'files')
 
   const post =  new Post({

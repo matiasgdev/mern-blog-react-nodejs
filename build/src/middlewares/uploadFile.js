@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'production') {
 
 var manageStorage = _multer["default"].diskStorage({
   destination: function destination(req, file, cb) {
-    cb(null, imageRoute + 'files/images');
+    cb(null, 'public/images');
   },
   filename: function filename(req, file, cb) {
     var fileName = (0, _nanoid.nanoid)(5) + _path["default"].extname(file.originalname);
