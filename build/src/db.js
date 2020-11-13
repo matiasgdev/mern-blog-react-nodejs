@@ -15,14 +15,13 @@ require('dotenv').config();
 
 var DB_URI = process.env.DB || 'mongodb://localhost:27017/blog-react-node';
 var port = process.env.PORT || 4000;
-var host = process.env.HOST || 'localhost';
 
 _mongoose["default"].connect(DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true
 }).then(function () {
-  _index["default"].listen(port, host, function () {
+  _index["default"].listen(port, function () {
     console.log('server running on port ' + process.env.PORT);
   });
 })["catch"](function (err) {

@@ -13,9 +13,15 @@ var _nanoid = require("nanoid");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+var imageRoute = '';
+
+if (process.env.NODE_ENV === 'production') {
+  imageRoute = 'https://blog-mern-stack-matiasgdev.herokuapp.com/';
+}
+
 var manageStorage = _multer["default"].diskStorage({
   destination: function destination(req, file, cb) {
-    cb(null, 'public/images');
+    cb(null, imageRoute + 'public/images');
   },
   filename: function filename(req, file, cb) {
     var fileName = (0, _nanoid.nanoid)(5) + _path["default"].extname(file.originalname);
