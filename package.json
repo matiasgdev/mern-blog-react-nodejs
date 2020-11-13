@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src --out-dir build/src && babel index.js --out-dir build",
-    "start": "node build/index.js",
-    "start:dev": "nodemon --exec babel-node index.js",
-    "start:prod": "node build/index.js"
+    "start": "node index.js",
+    "start:dev": "nodemon --exec babel-node index.js"
   },
   "keywords": [
     "react",
