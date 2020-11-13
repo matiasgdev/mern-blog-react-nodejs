@@ -10,8 +10,8 @@ import {
   USER_REGISTER_FAIL
 } from '../types/userTypes'
 
-const API_LOGIN = 'http://localhost:4000/api/auth/login'
-const API_SIGNIN = 'http://localhost:4000/api/auth/signup'
+const API_LOGIN = '/api/auth/login'
+const API_SIGNIN = '/api/auth/login'
 
 const config = {
   headers: {

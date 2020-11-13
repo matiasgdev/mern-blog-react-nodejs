@@ -30,7 +30,7 @@ import {
 } from '../types/postTypes'
 import axios from 'axios'
 
-const BASE_URL = `http://localhost:4000/api/post`
+const BASE_URL = `/api/post`
 
 const config = (user = null) => {
   return {
