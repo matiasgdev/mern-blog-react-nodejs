@@ -13,7 +13,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 require('dotenv').config();
 
-var DB_URI = process.env.DB || 'mongodb://localhost:27017/blog-react-node';
+var DB_URI = process.env.DB || 'mongodb://localhost/blog-react-node';
 var port = process.env.PORT || 4000;
 
 _mongoose["default"].connect(DB_URI, {
@@ -22,7 +22,7 @@ _mongoose["default"].connect(DB_URI, {
   useCreateIndex: true
 }).then(function () {
   _index["default"].listen(port, function () {
-    console.log('server running on port ' + process.env.PORT);
+    console.log('server running on port ' + port);
   });
 })["catch"](function (err) {
   console.error(err);

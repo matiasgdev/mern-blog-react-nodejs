@@ -15,18 +15,28 @@ var _expressAsyncHandler = _interopRequireDefault(require("express-async-handler
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
+var _path = _interopRequireDefault(require("path"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-_dotenv["default"].config(); // create new post
+_dotenv["default"].config();
+
+var resolvedPathForImages;
+
+if (process.env.NODE_ENV === 'production') {
+  resolvedPathForImages = _path["default"].resolve(process.cwd(), 'files', 'images');
+} else {
+  resolvedPathForImages = "http://localhost:".concat(process.env.PORT, "/files/images");
+} // create new post
 
 
 var create = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-    var _req$body, title, description, content, category, isTitleUnique, serverPath, filePath, post, userData, newPost;
+    var _req$body, title, description, content, category, isTitleUnique, post, userData, newPost;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -86,36 +96,29 @@ var create = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
             throw new Error('Ya existe un post con ese titulo');
 
           case 19:
-            serverPath = "http://localhost:".concat(process.env.SERVER_PORT, "/");
-
-            if (process.env.NODE_ENV === 'production') {
-              serverPath = "https://blog-mern-stack-matiasgdev.herokuapp.com/";
-            }
-
-            filePath = req.file.path.replace('public', 'files');
             post = new _Post["default"]({
               title: title,
               description: description,
               content: content,
               category: category,
-              imagePath: serverPath + filePath
+              imagePath: resolvedPathForImages + '/' + req.file.filename
             });
-            _context.next = 25;
+            _context.next = 22;
             return _User["default"].findOne({
               _id: res.user._id
             });
 
-          case 25:
+          case 22:
             userData = _context.sent;
             post.user = userData._id;
-            _context.next = 29;
+            _context.next = 26;
             return post.save();
 
-          case 29:
+          case 26:
             newPost = _context.sent;
             return _context.abrupt("return", res.status(201).json(newPost));
 
-          case 31:
+          case 28:
           case "end":
             return _context.stop();
         }

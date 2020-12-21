@@ -49,9 +49,10 @@ var findPostById = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function (
 
           case 10:
             res.post = post;
+            res.pepito = 'pepito';
             next();
 
-          case 12:
+          case 13:
           case "end":
             return _context.stop();
         }

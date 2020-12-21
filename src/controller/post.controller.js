@@ -10,7 +10,7 @@ dotenv.config()
 let resolvedPathForImages;
 
 if (process.env.NODE_ENV === 'production') {
-  resolvedPathForImages = path.resolve(process.cwd(), 'files', 'images');
+  resolvedPathForImages = path.resolve('https://blog-mern-stack-matiasgdev.herokuapp.com/', 'files', 'images');
 } else {
   resolvedPathForImages = `http://localhost:${process.env.PORT}/files/images`;
 }

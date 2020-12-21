@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel src --out-dir build/src && babel index.js --out-dir build",
+    "build": "concurrently \"babel src --out-dir build/src\"  \"babel index.js --out-dir build\"",
     "start": "node build/index.js",
     "start:dev": "nodemon --exec babel-node index.js"
   },
@@ -19,6 +19,7 @@
     "@babel/polyfill": "^7.12.1",
     "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
+    "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "dompurify": "^2.2.6",
     "dotenv": "^8.2.0",

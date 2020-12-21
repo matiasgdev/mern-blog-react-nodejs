@@ -33,14 +33,22 @@ _dotenv["default"].config();
 
 (0, _setup.createRoles)();
 app.use((0, _cors["default"])());
-app.use('/files', _express["default"]["static"]('public'));
 app.use(_express["default"].json());
+app.use('/files', _express["default"]["static"]('public'));
+app.use(_express["default"]["static"](_path["default"].resolve(__dirname, 'frontend', 'build')));
 app.use('/api/auth', _auth["default"]);
 app.use('/api/post', _post["default"]);
-app.use(_express["default"]["static"](_path["default"].resolve(__dirname, 'frontend', 'build')));
-app.use('*', function (req, res) {
-  res.sendFile(_path["default"].resolve(__dirname, 'frontend', 'build', 'index.html'));
-});
+
+if (process.env.NODE_ENV === 'production') {
+  app.use('*', function (_, res) {
+    res.sendFile(_path["default"].resolve(__dirname, 'frontend', 'build', 'index.html'));
+  });
+} else {
+  app.use("/", function (_, res) {
+    res.send("API Working...");
+  });
+}
+
 app.use(_errorMiddleware.notFound);
 app.use(_errorMiddleware.errorHandler);
 var _default = app;

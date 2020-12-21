@@ -107,7 +107,7 @@ var login = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
 }());
 exports.login = login;
 var create = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, res) {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(nextData, req, res, next) {
     var _req$body, email, password, username, roles, newUser, foundRole, role, _role, savedUser, token;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -207,7 +207,7 @@ var create = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
             token = _jsonwebtoken["default"].sign({
               id: savedUser._id
             }, _config["default"].SECRET_KEY, {
-              expiresIn: 86400 // one day
+              expiresIn: 86400 // one day 
 
             });
             res.status(201).json({
@@ -229,7 +229,7 @@ var create = (0, _expressAsyncHandler["default"])( /*#__PURE__*/function () {
     }, _callee2);
   }));
 
-  return function (_x3, _x4) {
+  return function (_x3, _x4, _x5, _x6) {
     return _ref2.apply(this, arguments);
   };
 }());
