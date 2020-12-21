@@ -45,6 +45,10 @@ import {
 } from './elements'
 import DeleteComment from '../../components/DeleteComment'
 
+const MarkedContent = ({ marked }) => {
+  return <div dangerouslySetInnerHTML={{__html: marked }} />
+}
+
 function PostDetailPage({params}) {
   const dispatch = useDispatch()
   const { userInfo } = useSelector(state => state.userLogin)
@@ -123,7 +127,7 @@ function PostDetailPage({params}) {
               <Image src={post.imagePath} alt={post.title} />
               <TextContainer>
                 <Content>
-                  {post.markedHtml}
+                  <MarkedContent marked={post.markedHtml} />
                 </Content>
               </TextContainer>
               <MoreDetails>
