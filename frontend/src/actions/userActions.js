@@ -17,8 +17,8 @@ let API_SIGNIN;
 API_LOGIN = 'https://blog-mern-stack-matiasgdev.herokuapp.com/api/auth/login'
 API_SIGNIN = 'https://blog-mern-stack-matiasgdev.herokuapp.com/api/auth/signup'
 
-API_LOGIN = 'http://localhost:4000/api/auth/login';
-API_SIGNIN = 'http://localhost:4000/api/auth/signup';
+// API_LOGIN = 'http://localhost:4000/api/auth/login';
+// API_SIGNIN = 'http://localhost:4000/api/auth/signup';
 
 const config = {
   headers: {

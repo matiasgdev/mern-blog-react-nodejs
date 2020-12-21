@@ -13,3 +13,4 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
+console.log(process.env.NODE_ENV);

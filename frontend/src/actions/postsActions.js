@@ -33,7 +33,7 @@ import axios from 'axios'
 let BASE_URL;
 
 BASE_URL = `https://blog-mern-stack-matiasgdev.herokuapp.com/api/post`;
-BASE_URL = 'http://localhost:4000/api/post';
+// BASE_URL = 'http://localhost:4000/api/post';
 
 const config = (user = null) => {
   return {
