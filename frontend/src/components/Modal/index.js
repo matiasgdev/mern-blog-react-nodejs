@@ -20,14 +20,14 @@ const Modal = ({
   error,
   success
 }) => {
-  
-  
   if (!open) return null
 
   return createPortal(
     <ModalContainer>
       <ModalWrapper open={open}>
-        {error ? error : (
+        {error 
+          ? error 
+          : (
           <>
             <ModalTitle>{message}</ModalTitle>
             {success && 'Se borro exitosamente'}
@@ -38,7 +38,8 @@ const Modal = ({
               </ModalDetails>
             )}
           </>
-        )}
+          )
+        }
         <CloseButton onClick={handleOpenModal}/>
       </ModalWrapper>
     </ModalContainer>,

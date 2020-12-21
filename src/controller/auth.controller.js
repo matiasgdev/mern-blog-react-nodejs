@@ -15,6 +15,7 @@ export const login = ash(async (req, res) => {
   }
 
   const user = await User.findOne({ email: req.body.email })
+
   if (!user) {
     res.status(404)
     throw new Error('El usuario no existe')
@@ -31,12 +32,13 @@ export const login = ash(async (req, res) => {
   
   return res.json({ 
     message: 'Ha iniciado sesion', 
-    data: {user, token}
+    data: { user, token}
   })
   
 })
 
-export const create = ash(async (req, res) => {
+
+export const create = ash(async (nextData, req, res, next) => {
   if (req.body.email === '') {
     res.status(400)
     throw new Error('Se requiere un email')
@@ -70,7 +72,7 @@ export const create = ash(async (req, res) => {
   const savedUser = await newUser.save()
 
   const token = jwt.sign({ id: savedUser._id }, config.SECRET_KEY , {
-    expiresIn: 86400 // one day
+    expiresIn: 86400 // one day 
   })
 
   res.status(201).json({

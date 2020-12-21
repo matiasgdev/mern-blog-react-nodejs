@@ -13,21 +13,27 @@ dotenv.config()
 import { createRoles } from './src/libs/setup'
 
 createRoles()
-
 import './src/db'
 
 app.use(cors())
-app.use('/files', express.static('public'))
 app.use(express.json())
+app.use('/files', express.static('public'))
+app.use(express.static(path.resolve(__dirname, 'frontend', 'build')))
 
 
 app.use('/api/auth', auth)
 app.use('/api/post', post)
 
-app.use(express.static(path.resolve(__dirname, 'frontend', 'build')))
-app.use('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-})
+
+if (process.env.NODE_ENV === 'production') {
+  app.use('*', (_, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+  })
+} else {
+  app.use("/", (_, res) => {
+    res.send("API Working...");
+  });
+}
 
 
 app.use(notFound)

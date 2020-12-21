@@ -17,7 +17,7 @@ const DeleteComment = ({commentId, postId, slug}) => {
   
   useEffect(() => {
     return () => {
-      dispatch({type: POST_DELETE_COMMENT_CLEAR })
+      dispatch({ type: POST_DELETE_COMMENT_CLEAR })
     }
   }, [])
 

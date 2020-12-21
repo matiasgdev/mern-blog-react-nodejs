@@ -4,6 +4,7 @@ import User from '../models/User'
 import ash from 'express-async-handler'
 
 export const verifyToken = ash(async (req, res, next) => {
+  
   if( 
     req.headers['authorization'] &&
     req.headers['authorization'].startsWith('Bearer ')

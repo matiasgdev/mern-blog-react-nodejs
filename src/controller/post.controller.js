@@ -3,8 +3,17 @@ import User from '../models/User'
 import Comment from '../models/Comment'
 import ash from 'express-async-handler'
 import dotenv from 'dotenv'
+import path from 'path';
 
 dotenv.config()
+
+let resolvedPathForImages;
+
+if (process.env.NODE_ENV === 'production') {
+  resolvedPathForImages = path.resolve(process.cwd(), 'files', 'images');
+} else {
+  resolvedPathForImages = `http://localhost:${process.env.PORT}/files/images`;
+}
 
 // create new post
 export const create = ash(async (req, res) => {
@@ -36,19 +45,12 @@ export const create = ash(async (req, res) => {
     throw new Error('Ya existe un post con ese titulo')
   }
 
-  
-  let serverPath = `http://localhost:${process.env.SERVER_PORT}/`
-  if (process.env.NODE_ENV === 'production') {
-    serverPath = `https://blog-mern-stack-matiasgdev.herokuapp.com/`
-  }
-  const filePath = req.file.path.replace('public', 'files')
-
   const post =  new Post({
     title,
     description,
     content,
     category,
-    imagePath: serverPath + filePath
+    imagePath: resolvedPathForImages + '/' + req.file.filename
   })
 
   const userData = await User.findOne({ _id: res.user._id })
@@ -65,7 +67,6 @@ export const list = ash(async (req, res) => {
   const page = Number(req.query.page) || 1
 
   const count = await Post.countDocuments()
-  
   const posts = await Post.find()
     .populate([
       {
@@ -89,13 +90,12 @@ export const list = ash(async (req, res) => {
 })
 
 export const listPopular = ash(async (req, res) => {
-
   const popularPosts = await Post.find({})
     .sort({likes: -1})
     .limit(3)
     .populate('user', 'username')
   
-    res.json(popularPosts)
+   res.json(popularPosts)
 
 })
 
@@ -152,7 +152,9 @@ export const updateLikesOfPost = ash(async (req, res) => {
     const updatedPost = await post.save()
     const numOfLikes = updatedPost.likes.length
 
-    res.status(201).json({message: 'removed', num: numOfLikes })
+    res
+      .status(201)
+      .json({message: 'removed', num: numOfLikes })
 
   } else {
     const like = {
@@ -163,9 +165,10 @@ export const updateLikesOfPost = ash(async (req, res) => {
     const updatedPost = await post.save()
     const numOfLikes = updatedPost.likes.length
     
-    res.status(201).json({message: 'added', num: numOfLikes })
+    res
+      .status(201)
+      .json({message: 'added', num: numOfLikes })
   }
-
 })
 
 // add comment
@@ -181,10 +184,9 @@ export const addCommentToPost = ash(async (req, res) => {
 
 // delete comment 
 export const deleteComment = ash(async (req, res) => {
-
   const isDeleted = await Post.findOneAndUpdate(
     { _id: req.params.postId },
-    { $pull: { comments: req.params.commentId}},
+    { $pull: {comments: req.params.commentId}},
     { new: true }
   )
 

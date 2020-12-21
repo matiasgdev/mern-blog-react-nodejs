@@ -14,5 +14,7 @@ export default ash(async (req, res, next) => {
     res.status(400)
     throw new Error("Nombre de usuario en uso")
   }
+
   next()
+
 })

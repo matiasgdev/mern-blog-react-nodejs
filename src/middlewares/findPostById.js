@@ -17,5 +17,7 @@ export const findPostById = ash(async (req, res, next) => {
   }
   
   res.post = post
+  res.pepito = 'pepito'
+
   next()
 })

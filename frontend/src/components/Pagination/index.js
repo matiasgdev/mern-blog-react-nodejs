@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useLocation } from 'wouter'
 
 import { 
@@ -22,6 +23,7 @@ function Pagination({pages, page}) {
       pushLocation(`/comunidad/${page - 1}`)
     }
   }
+
   const handleNextPage = () => {
     if (page === pages) {
       return 
@@ -58,6 +60,11 @@ function Pagination({pages, page}) {
       </PaginationContent>
     </PaginationContainer>
   )
+}
+
+Pagination.propTypes = {
+  pages: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired
 }
 
 

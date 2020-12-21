@@ -11,9 +11,7 @@ export const DetailPageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-`
-
+`  
 
 export const PostContainer = styled.div`
   margin: 3em 0;
@@ -22,7 +20,6 @@ export const PostContainer = styled.div`
   display: grid;
   grid-template-columns: 70% 1fr;
   grid-template-rows: 200px 1fr;
-
   grid-template-areas: 'left right'
                       'content content';
 

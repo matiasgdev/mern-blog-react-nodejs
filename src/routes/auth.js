@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import {create, login } from '../controller/auth.controller.js'
+import { create, login, getUsers} from '../controller/auth.controller.js'
 import checkDuplicatedUser from '../middlewares/checkDuplicatedUser'
 
 const router = Router()

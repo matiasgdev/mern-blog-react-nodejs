@@ -123,7 +123,7 @@ function PostDetailPage({params}) {
               <Image src={post.imagePath} alt={post.title} />
               <TextContainer>
                 <Content>
-                  {post.content}
+                  {post.markedHtml}
                 </Content>
               </TextContainer>
               <MoreDetails>

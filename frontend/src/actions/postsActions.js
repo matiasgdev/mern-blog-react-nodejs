@@ -30,7 +30,10 @@ import {
 } from '../types/postTypes'
 import axios from 'axios'
 
-const BASE_URL = `https://blog-mern-stack-matiasgdev.herokuapp.com/api/post`
+let BASE_URL;
+
+BASE_URL = `https://blog-mern-stack-matiasgdev.herokuapp.com/api/post`;
+BASE_URL = 'http://localhost:4000/api/post';
 
 const config = (user = null) => {
   return {
@@ -72,10 +75,10 @@ export const getPopularPosts = () => async dispatch => {
       dispatch({type: POSTS_GET_POPULAR_SUCCESS, payload: data})
     }, 500)
 
-  }catch(e) {
+  } catch(e) {
     dispatch({
       type: POSTS_GET_POPULAR_ERROR,
-      payload: e.response.data.message && e.response ?
+      payload: e?.response?.data?.message && e?.response ?
         e.response.data.message :
         e.message
     })
@@ -86,7 +89,6 @@ export const createPost = ({ data }) => async (dispatch, getState) => {
   try {
     dispatch({ type: NEW_POST_REQUEST })
     const { userLogin: { userInfo } } = getState()
-    
     const res = await axios.post(BASE_URL, data, config(userInfo))
 
     dispatch({type: NEW_POST_SUCCESS, payload: res.data })
@@ -122,7 +124,6 @@ export const detail = (slug) => async (dispatch) => {
 export const updateLikes = ({id, slug}) => async (dispatch, getState) => {
 
   try {
-
     dispatch({type: POST_UPDATE_LIKES_REQUEST })
     const { userLogin: { userInfo } } = getState()
 
@@ -159,11 +160,10 @@ export const createComment = ({id, comment, slug}) => async (dispatch, getState)
       config(userInfo)
     )
     dispatch({type: POST_CREATE_COMMENT_SUCCESS})
-
     const { data: dataPost } = await axios.get(`${BASE_URL}/${slug}`)
     dispatch({type: POST_DETAIL_SUCCESS, payload: dataPost })
 
-  }catch(e) {
+  } catch(e) {
     dispatch({ type: POST_CREATE_COMMENT_ERROR,
       payload: e.response && e.response.data.message ? 
         e.response.data.message : 
@@ -173,7 +173,6 @@ export const createComment = ({id, comment, slug}) => async (dispatch, getState)
 }
 
 export const deleteComment = ({postId, commentId, slug}) => async (dispatch, getState) => {
-  
   try {
     const { userLogin: { userInfo } } = getState()
     dispatch({type: POST_DELETE_COMMENT_REQUEST})
@@ -197,12 +196,10 @@ export const deleteComment = ({postId, commentId, slug}) => async (dispatch, get
   }
 }
 
-
 export const updatePost = ({ newData, id }) => async (dispatch, getState) => {
   try {
     const { userLogin: { userInfo }} = getState()
     dispatch({type: POST_UPDATE_REQUEST})
-
 
     const { data } = await axios.put(
       `${BASE_URL}/${id}`,

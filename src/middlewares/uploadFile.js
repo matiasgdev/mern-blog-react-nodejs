@@ -3,7 +3,7 @@ import path from 'path'
 import { nanoid } from 'nanoid'
 
 
-let imageRoute = ''
+let imageRoute = '';
 if (process.env.NODE_ENV === 'production') {
   imageRoute = 'https://blog-mern-stack-matiasgdev.herokuapp.com/'
 }
