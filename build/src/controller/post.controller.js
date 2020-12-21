@@ -28,7 +28,7 @@ _dotenv["default"].config();
 var resolvedPathForImages;
 
 if (process.env.NODE_ENV === 'production') {
-  resolvedPathForImages = _path["default"].resolve(process.cwd(), 'files', 'images');
+  resolvedPathForImages = "https://blog-mern-stack-matiasgdev.herokuapp.com/files/images";
 } else {
   resolvedPathForImages = "http://localhost:".concat(process.env.PORT, "/files/images");
 } // create new post
